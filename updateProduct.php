@@ -3,10 +3,17 @@
 require_once "config.php";
  
 // Define variables and initialize with empty values
-$name = $description = $release_dt = $release_dt_status = $price = "";
+$name = $description = $release_dt = $release_dt_status = $price = $genre_id = $franchise_id = "";
 $name_err = $description_err = $genre_err = $franchise_err = $release_dt_err = $release_dt_status_err = $price_err = "";
  
+// Get drop list values for Genres and Franchises
+	$sqlGenres 	= "SELECT * FROM `genres`";
+	$all_genres 	= mysqli_query($conn,$sqlGenres);
+	$sqlFranchises  = "SELECT * FROM `franchises`";
+	$all_franchises = mysqli_query($conn,$sqlFranchises);
+
 // Processing form data when form is submitted
+
 if(isset($_POST["id"]) && !empty($_POST["id"])){
     // Get hidden input value
     $id = $_POST["id"];
@@ -31,8 +38,8 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
         $description = $input_description;
     }
 
-    $genre_id 			= trim($_POST["genre_id"]);
-    $franchise_id 		= trim($_POST["franchise_id"]);
+    $genre_id 			= trim($_POST["GenreId"]);
+    $franchise_id 		= trim($_POST["FranchiseId"]);
     $release_dt 		= trim($_POST["release_dt"]);
     $release_dt_status 	= trim($_POST["release_dt_status"]);
     $price		 	= trim($_POST["price"]);
@@ -40,11 +47,11 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     // Check input errors before inserting in database
     if(empty($name_err) && empty($description_err)){
         // Prepare an update statement
-        $sql = "UPDATE products SET name=?, description=?, release_dt=?, release_dt_status=?, price=? WHERE id=?";
-         
+        $sql = "UPDATE products SET name=?, description=?, release_dt=?, release_dt_status=?, price=?, genre_id=?, franchise_id=? WHERE id=?";
+
         if($stmt = mysqli_prepare($conn, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssssdi", $param_name, $param_description, $param_release_dt, $param_release_dt_status, $price, $param_id);
+            mysqli_stmt_bind_param($stmt, "ssssdiii", $param_name, $param_description, $param_release_dt, $param_release_dt_status, $param_price, $param_genre_id, $param_franchise_id, $param_id);
             
             // Set parameters
             $param_name 		= $name;
@@ -52,8 +59,9 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             $param_release_dt		= $release_dt;
             $param_release_dt_status	= $release_dt_status;
             $param_price 		= $price;
+            $param_genre_id 		= $genre_id;
+            $param_franchise_id 	= $franchise_id;
             $param_id 			= $id;
-
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
@@ -161,18 +169,6 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                         </div>
 
                         <div class="form-group">
-                            <label>Genre Id</label>
-                            <input type="text" name="genre_id" 	class="form-control <?php echo (!empty($genre_err)) ? 'is-invalid' : ''; ?>" 			value="<?php echo $genre_id; ?>">
-                            <span class="invalid-feedback"><?php echo $genre_err;?></span>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Franchise Id</label>
-                            <input type="text" name="franchise_id" 	class="form-control <?php echo (!empty($franchise_err)) ? 'is-invalid' : ''; ?>" 		value="<?php echo $franchise_id; ?>">
-                            <span class="invalid-feedback"><?php echo $franchise_err;?></span>
-                        </div>
-
-                        <div class="form-group">
                             <label>Release Date</label>
                             <input type="date" name="release_dt" 	class="form-control <?php echo (!empty($release_dt_err)) ? 'is-invalid' : ''; ?>" 		value="<?php echo $release_dt; ?>">
                             <span class="invalid-feedback"><?php echo $release_dt_err;?></span>
@@ -186,9 +182,46 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 
                         <div class="form-group">
                             <label>Price</label>
-                            <input type="number" name="price" 	class="form-control <?php echo (!empty($price_err)) ? 'is-invalid' : ''; ?>" 			value="<?php echo $price; ?>" min="0.01" step="0.01" max="2500">
+                            <input type="number" name="price" 	class="form-control <?php echo (!empty($price_err)) ? 'is-invalid' : ''; ?>" 			value="<?php echo $price; ?>" min="0" step="0.01" max="2500">
                             <span class="invalid-feedback"><?php echo $price_err;?></span>
                         </div>
+
+                        <div class="form-group">
+                            <label>Select a Genre</label>
+				<select name="GenreId">
+					<?php while ($genre = mysqli_fetch_array($all_genres,MYSQLI_ASSOC)):; ?>
+						<?php if ($genre["id"] == $genre_id): ?>
+				                	<option selected = "selected" value="<?php echo $genre["id"]; ?>">
+				                	<?php echo $genre["name"]; ?>
+						<?php else: ?>
+				                	<option value="<?php echo $genre["id"]; ?>">
+				                	<?php echo $genre["name"]; ?>						
+			                		</option>			
+						<?php endif; ?>
+			
+					<?php endwhile; ?>
+				</select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Select a Franchise</label>
+				</select>
+				<select name="FranchiseId">
+					<?php while ($franchise = mysqli_fetch_array($all_franchises,MYSQLI_ASSOC)):; ?>
+						<?php if ($franchise["id"] == $franchise_id): ?>
+				                	<option selected = "selected" value="<?php echo $franchise["id"]; ?>">
+				                	<?php echo $franchise["name"]; ?>
+						<?php else: ?>
+				                	<option value="<?php echo $franchise["id"]; ?>">
+				                	<?php echo $franchise["name"]; ?>						
+			                		</option>			
+						<?php endif; ?>
+					<?php endwhile; ?>
+				</select>
+
+                        </div>
+
+
 
                         <input type="hidden" name="id" value="<?php echo $id; ?>"/>
                         <input type="submit" class="btn btn-primary" value="Submit">
