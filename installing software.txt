@@ -1,0 +1,48 @@
+Ubuntu install
+	username: tlooy
+	password: TLUbuntu24!
+
+After install of Ubuntu 20 get wifi adapter working:
+	sudo apt install dkms
+	sudo apt install git
+	sudo apt update
+	sudo apt install --reinstall git dkms build-essential
+	git clone https://github.com/aircrack-ng/rtl8812au.git
+	sudo make dkms_install
+	reboot
+
+installing LAMP stack: Apache2
+	sudo apt install apache2
+	sudo ufw allow 'Apache' (allow acess to port 80 only)
+	verify that it is installed and running: http://10.0.0.40 
+		(use hostname -I to get ip address)
+	To stop your web server, type:
+		sudo systemctl stop apache2
+	To start the web server when it is stopped, type:
+		sudo systemctl start apache2
+	To check on status of Apache
+		sudo systemctl status apache2
+
+installing LAMP stack: PHP
+	sudo apt install php libapache2-mod-php (from Ubuntu website: https://ubuntu.com/server/docs/programming-php)
+	sudo apt install php-cli
+	sudo apt install php-cgi
+	sudo apt install php-mysql
+
+Installing LAMP stack: mysql
+	sudo apt install mysql-server
+	sudo mysql
+		create database testing;
+		use testing;
+		create table genre;
+		create user 'tlooy'@'localhost' identified by 'TLUbuntu24!';
+		grant all privileges on *.* to 'tlooy'@'localhost' with grant option;
+	
+Editing webpage content
+	gedit /var/www/html (default apache2 webpage. TODO: edit /etc/apache2.apache2.conf)
+
+Installing Git (version 2.34.0 is the latest version at the time of my install)
+	sudo apt-get install git-all
+	
+Adding a new SSH Key in order to do a Git push	
+	https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
