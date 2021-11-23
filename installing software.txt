@@ -34,7 +34,6 @@ Installing LAMP stack: mysql
 	sudo mysql
 		create database testing;
 		use testing;
-		create table genre;
 		create user 'tlooy'@'localhost' identified by 'TLUbuntu24!';
 		grant all privileges on *.* to 'tlooy'@'localhost' with grant option;
 	
