@@ -46,3 +46,6 @@ Installing Git (version 2.34.0 is the latest version at the time of my install)
 	
 Adding a new SSH Key in order to do a Git push	
 	https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+	
+Exporting and Importing the mysql database
+	https://www.digitalocean.com/community/tutorials/how-to-import-and-export-databases-in-mysql-or-mariadb
