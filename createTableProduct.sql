@@ -1,3 +1,41 @@
+
+
+CREATE TABLE comments (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    product_id INT,
+    comment VARCHAR(255) NOT NULL,
+    source_id INT,
+    hyperlink VARCHAR(255),
+    create_dt DATE,
+
+    FOREIGN KEY (product_id)
+      REFERENCES products(id)
+      ON DELETE RESTRICT,
+
+    FOREIGN KEY (source_id)
+      REFERENCES sources(id)
+      ON DELETE RESTRICT
+
+);
+
+CREATE TABLE sources (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE genres (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE franchises (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE products (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -37,21 +75,4 @@ CREATE TABLE comments (
 
 );
 
-CREATE TABLE sources (
-    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    description VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE genres (
-    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    description VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE franchises (
-    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    description VARCHAR(255) NOT NULL
-);
 
