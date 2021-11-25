@@ -1,6 +1,6 @@
 <?php
 // Include config file
-	require_once "config.php";
+	require_once "./config.php";
 	
 	$selected_product = $selected_genre = $selected_franchise = "--";
 	
@@ -57,7 +57,7 @@
     </style>
 </head>
 <body>
-    <?php require_once("headerUser.php"); ?>	
+    <?php require_once("./headerUser.php"); ?>	
 
     <div class="wrapper">
         <div class="container-fluid">
@@ -110,7 +110,7 @@
                         </div>
 
                         <input type="submit" class="btn btn-primary" value="Query">
-                        <a href="index.php" class="btn btn-secondary ml-2">Cancel</a>
+                        <a href="./index.php" class="btn btn-secondary ml-2">Cancel</a>
 
 			<div>        
 				<iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=America%2FLos_Angeles&src=dGxvb3kyNEBnbWFpbC5jb20&src=c3V6bG9veUBnbWFpbC5jb20&color=%23E67C73&color=%234285F4" 
@@ -148,7 +148,7 @@
                                                      echo "<td>" . $row['release_dt_status'] 		. "</td>";
                                                      echo "<td>" . $row['price'] 			. "</td>";
 		                                     echo "<td>";
-                                                         echo '<a href="readProductComments.php?id=' . $row['id'] .'" class="mr-3" title="View Comments" data-toggle="tooltip"><span class="fa fa-book"></span></a>';
+                                                         echo '<a href="./readProductComments.php?id=' . $row['id'] .'" class="mr-3" title="View Comments" data-toggle="tooltip"><span class="fa fa-book"></span></a>';
 	                                             echo "</td>";
 
                                                      echo "</tr>";

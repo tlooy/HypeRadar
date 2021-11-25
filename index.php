@@ -24,18 +24,18 @@
     </script>
 </head>
 <body>
-    <?php require_once("header.php"); ?>	
+    <?php require_once("./header.php"); ?>	
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     <div class="mt-5 mb-3 clearfix">
                         <h2 class="pull-left">Genre List</h2>
-                        <a href="createRecord.php?table=genres" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add New Genre</a>
+                        <a href="./createRecord.php?table=genres" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add New Genre</a>
                     </div>
                     <?php
                     // Include config file
-                    require_once "config.php";
+                    require_once "./config.php";
                     
                     // Attempt select query execution
                     $sql = "SELECT * FROM genres";
@@ -52,9 +52,9 @@
                                     echo "<tr>";
                                         echo "<td>" . $row['name'] . "</td>";
                                         echo "<td>";
-                                            echo '<a href="readRecord.php?id='  . $row['id'] .'&table=genres'.'" class="mr-3" title="View Genre" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
-                                            echo '<a href="updateRecord.php?id='. $row['id'] .'&table=genres'.'" class="mr-3" title="Update Genre" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
-                                            echo '<a href="deleteRecord.php?id='. $row['id'] .'&table=genres'.'" title="Delete Genre" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
+                                            echo '<a href="./readRecord.php?id='  . $row['id'] .'&table=genres'.'" class="mr-3" title="View Genre" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
+                                            echo '<a href="./updateRecord.php?id='. $row['id'] .'&table=genres'.'" class="mr-3" title="Update Genre" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
+                                            echo '<a href="./deleteRecord.php?id='. $row['id'] .'&table=genres'.'" title="Delete Genre" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
                                         echo "</td>";
                                     echo "</tr>";
                                 }
@@ -79,7 +79,7 @@
                 <div class="col-md-12">
                     <div class="mt-5 mb-3 clearfix">
                         <h2 class="pull-left">Franchise List</h2>
-                        <a href="createRecord.php?table=franchises" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add New Franchise</a>
+                        <a href="./createRecord.php?table=franchises" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add New Franchise</a>
                     </div>
                     <?php
                     // Attempt select query execution
@@ -97,9 +97,9 @@
                                     echo "<tr>";
                                         echo "<td>" . $row['name'] . "</td>";
                                         echo "<td>";
-                                            echo '<a href="readRecord.php?id='  . $row['id'] .'&table=franchises'.'" class="mr-3" title="View Franchise" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
-                                            echo '<a href="updateRecord.php?id='. $row['id'] .'&table=franchises'.'" class="mr-3" title="Update Franchise" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
-                                            echo '<a href="deleteRecord.php?id='. $row['id'] .'&table=franchises'.'" title="Delete Franchise" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
+                                            echo '<a href="./readRecord.php?id='  . $row['id'] .'&table=franchises'.'" class="mr-3" title="View Franchise" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
+                                            echo '<a href="./updateRecord.php?id='. $row['id'] .'&table=franchises'.'" class="mr-3" title="Update Franchise" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
+                                            echo '<a href="./deleteRecord.php?id='. $row['id'] .'&table=franchises'.'" title="Delete Franchise" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
                                         echo "</td>";
                                     echo "</tr>";
                                 }
@@ -124,7 +124,7 @@
                 <div class="col-md-12">
                     <div class="mt-5 mb-3 clearfix">
                         <h2 class="pull-left">Source List</h2>
-                        <a href="createRecord.php?table=sources" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add New Source</a>
+                        <a href="./createRecord.php?table=sources" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add New Source</a>
                     </div>
                     <?php
                     // Attempt select query execution
@@ -142,9 +142,9 @@
                                     echo "<tr>";
                                         echo "<td>" . $row['name'] . "</td>";
                                         echo "<td>";
-                                            echo '<a href="readRecord.php?id='  . $row['id'] .'&table=sources'.'" class="mr-3" title="View Source" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
-                                            echo '<a href="updateRecord.php?id='. $row['id'] .'&table=sources'.'" class="mr-3" title="Update Source" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
-                                            echo '<a href="deleteRecord.php?id='. $row['id'] .'&table=sources'.'" title="Delete Source" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
+                                            echo '<a href="./readRecord.php?id='  . $row['id'] .'&table=sources'.'" class="mr-3" title="View Source" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
+                                            echo '<a href="./updateRecord.php?id='. $row['id'] .'&table=sources'.'" class="mr-3" title="Update Source" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
+                                            echo '<a href="./deleteRecord.php?id='. $row['id'] .'&table=sources'.'" title="Delete Source" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
                                         echo "</td>";
                                     echo "</tr>";
                                 }
@@ -169,7 +169,7 @@
                 <div class="col-md-12">
                     <div class="mt-5 mb-3 clearfix">
                         <h2 class="pull-left">Product List</h2>
-                        <a href="createProduct.php" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add New Product</a>
+                        <a href="./createProduct.php" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add New Product</a>
                     </div>
                     <?php                    
                     // Attempt select query execution
@@ -186,10 +186,10 @@
                                     echo "<tr>";
                                         echo "<td width=75%>" . $row['name'] . "</td>";
                                         echo "<td width=25%>";
-                                            echo '<a href="readProduct.php?id='  	  . $row['id'] .'" class="mr-3" title="View Product" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
-                                            echo '<a href="updateProduct.php?id='	  . $row['id'] .'" class="mr-3" title="Update Product" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
-                                            echo '<a href="createProductComment.php?id='. $row['id'] .'" class="mr-3" title="Add Product Comment" data-toggle="tooltip"><span class="fa fa-book"></span></a>';
-                                            echo '<a href="deleteRecord.php?id='	  . $row['id'] .'&table=products'.'" title="Delete Product" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
+                                            echo '<a href="./readProduct.php?id='  	  . $row['id'] .'" class="mr-3" title="View Product" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
+                                            echo '<a href="./updateProduct.php?id='	  . $row['id'] .'" class="mr-3" title="Update Product" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
+                                            echo '<a href="./createProductComment.php?id='. $row['id'] .'" class="mr-3" title="Add Product Comment" data-toggle="tooltip"><span class="fa fa-book"></span></a>';
+                                            echo '<a href="./deleteRecord.php?id='	  . $row['id'] .'&table=products'.'" title="Delete Product" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
                                         echo "</td>";
                                     echo "</tr>";
                                 }
@@ -213,6 +213,6 @@
         
         </div>
     </div>
-    <?php require_once("footer.php"); ?>	
+    <?php require_once("./footer.php"); ?>	
 </body>
 </html>

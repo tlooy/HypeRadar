@@ -1,6 +1,6 @@
 <?php
 // Include config file
-require_once "config.php";
+require_once "./config.php";
  
 // Define variables and initialize with empty values
 $name = $description = $release_dt = $release_dt_status = $price = $genre_id = $franchise_id = "";
@@ -66,7 +66,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records updated successfully. Redirect to landing page
-                header("location: index.php");
+                header("location: ./index.php");
                 exit();
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
@@ -113,7 +113,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     $price		 	= $row["price"];
                 } else{
                     // URL doesn't contain valid id. Redirect to error page
-                    header("location: error.php");
+                    header("location: ./error.php");
                     exit();
                 }
                 
@@ -129,7 +129,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
         mysqli_close($conn);
     }  else{
         // URL doesn't contain id parameter. Redirect to error page
-        header("location: error.php");
+        header("location: ./error.php");
         exit();
     }
 }
@@ -225,7 +225,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 
                         <input type="hidden" name="id" value="<?php echo $id; ?>"/>
                         <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="index.php" class="btn btn-secondary ml-2">Cancel</a>
+                        <a href="./index.php" class="btn btn-secondary ml-2">Cancel</a>
                     </form>
                 </div>
             </div>        

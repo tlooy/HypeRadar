@@ -2,7 +2,7 @@
 // Check existence of id parameter before processing further
 if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     // Include config file
-    require_once "config.php";
+    require_once "./config.php";
 
     $param_product_id = trim($_GET["id"]);
 
@@ -39,7 +39,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
 
 } else{
     // URL doesn't contain id parameter. Redirect to error page
-    header("location: error.php");
+    header("location: ./error.php");
     exit();
 }
 ?>

@@ -2,7 +2,7 @@
 // Check existence of id parameter before processing further
 if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     // Include config file
-    require_once "config.php";
+    require_once "./config.php";
 
     // Prepare a select statements
     $sql_product 	= "SELECT * FROM products WHERE id = ?";
@@ -56,7 +56,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
 
             } else{
                 // URL doesn't contain valid id parameter. Redirect to error page
-                header("location: error.php");
+                header("location: ./error.php");
                 exit();
             } 
             
@@ -75,7 +75,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
 
 } else{
     // URL doesn't contain id parameter. Redirect to error page
-    header("location: error.php");
+    header("location: ./error.php");
     exit();
 }
 ?>
@@ -145,7 +145,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                 <div class="col-md-12">
                     <div class="mt-5 mb-3 clearfix">
                         <h2 class="pull-left">Product Comments</h2>
-                        <?php echo '<a href="createProductComment.php?id=' . $param_product_id . '" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add Product Comment</a>'; ?>
+                        <?php echo '<a href="./createProductComment.php?id=' . $param_product_id . '" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add Product Comment</a>'; ?>
                     </div>
                     <?php
                         if(mysqli_num_rows($result_comments) > 0){
@@ -156,8 +156,8 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                                     echo "<tr>";
                                         echo "<td width=75%>" . $row['comment'] . "</td>";
                                         echo "<td width=25%>";
-                                            echo '<a href="updateProductComment.php?id=' . $row['id'] .'" class="mr-3" title="Update Comment" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
-                                            echo '<a href="deleteProductComment.php?id=' . $row['id'] .'&table=products'.'" title="Delete Comment" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
+                                            echo '<a href="./updateProductComment.php?id=' . $row['id'] .'" class="mr-3" title="Update Comment" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
+                                            echo '<a href="./deleteProductComment.php?id=' . $row['id'] .'&table=products'.'" title="Delete Comment" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
                                         echo "</td>";
                                     echo "</tr>";
                                 }
@@ -172,7 +172,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                 </div>
             </div>        
 
-                    <p><a href="index.php" class="btn btn-primary">Back</a></p>
+                    <p><a href="./index.php" class="btn btn-primary">Back</a></p>
                 </div>
             </div>        
         </div>

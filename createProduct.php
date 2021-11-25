@@ -1,6 +1,6 @@
 <?php
 // Include config file
-	require_once "config.php";
+	require_once "./config.php";
 	
 	$name = $description = $genreName = $genreId = $franchiseName = $franchiseId = $releaseDt = $releaseDtStatus = $price = "";
 	$name_err = $description_err = $release_dt_status = "";
@@ -62,7 +62,7 @@
        		    $param_price	 	= $price;
 
 	        	    if(mysqli_stmt_execute($stmt)){
-	        	        header("location: index.php");
+	        	        header("location: ./index.php");
 	        	        exit();
 	        	    } else{
 	        	        echo "Oops! Something went wrong. Please try again later.";
@@ -157,7 +157,7 @@
 
                         <input type="submit" class="btn btn-primary" value="Submit">
 
-                        <a href="index.php" class="btn btn-secondary ml-2">Cancel</a>
+                        <a href="./index.php" class="btn btn-secondary ml-2">Cancel</a>
                     </form>
                 </div>
             </div>        
