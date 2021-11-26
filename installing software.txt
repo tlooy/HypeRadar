@@ -98,7 +98,51 @@ AWS Lightsail Install
 			create user 'tlooy'@'localhost' identified by 'TLUbuntu24!';
 			grant all privileges on *.* to 'tlooy'@'%' with grant option;
 		
+
+
+*****************************************		
+Updating Anrew's Laptop for new git repo
+*****************************************
+Deleted the exiting git repo
+	cd /var/www/html 
+	rm-fr .git
+	rm-fr src
+	rm-fr css
+	rm-fr *.*
+ 
+Cloned the git repo from github
+	cd /var/www/html
+ 	git clone https://github.com/tlooy/HypeRadar
+
+Created Personal Access Token in order to allow 'git push' from this machine to github
+	https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
+	 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
+	 (Note: use this token as your github password when you do a git push)
+
+Created a config.php file with your local database connection details (Note:config.php is included in the .ignore file so it won't be pushed to github)
+	<?php
+
+    		$dbhost = 'localhost';
+    		$dbuser = 'tlooy';
+    		$dbpass = 'TLUbuntu24!';
+    		$dbname = 'testing';
+
+		$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 		
+		if (mysqli_connect_errno()) {
+			print('Connect failed');
+			echo('Connect failed');
+		}
+
+		if (!$conn) {
+			die('Could not connect: ' . mysql_error());
+		}
+	?>
+
+
+	 
+Installed Discord
+	sudo snap install discord
 		
 		
 		
