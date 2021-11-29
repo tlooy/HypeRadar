@@ -139,19 +139,19 @@
 
                         <div class="form-group">
                             <label>Release Date</label>
-                            <input type="date" name="ReleaseDt" class="form-control" value="<?php echo $ReleaseDt; ?>">
+                            <input type="date" name="ReleaseDt" class="form-control" value="<?php echo $releaseDt; ?>">
                             <span class="invalid-feedback"><?php echo $description_err;?></span>
                         </div>
 
                         <div class="form-group">
                             <label>Release Date Status</label>
-                            <input type="text" name="ReleaseDtStatus" class="form-control value="<?php echo $ReleaseDtStatus; ?>">
+                            <input type="text" name="ReleaseDtStatus" class="form-control value="<?php echo $releaseDtStatus; ?>">
                             <span class="invalid-feedback"><?php echo $release_dt_status_err;?></span>
                         </div>
 
                         <div class="form-group">
                             <label>Price</label>
-                            <input type="number" name="Price" class="form-control value="<?php echo $Price; ?>">
+                            <input type="number" name="Price" class="form-control value="<?php echo $price; ?>">
                             <span class="invalid-feedback"><?php echo $price_err;?></span>
                         </div>
 

@@ -36,7 +36,7 @@
 		}
 		$result = mysqli_query($conn, $sql_select);
 	}    	
-        mysqli_stmt_close($stmt);
+
 ?>
 
 <!DOCTYPE html>
@@ -114,7 +114,7 @@
                                       <h2 class="pull-left">Product List</h2>
                                  </div>
                                  <?php
-                                           if(mysqli_num_rows($result) > 0){
+                                           if(isset($result)){ // if we have results in $result then process them
                                                 echo '<table class="table table-bordered table-striped">';
                                                 echo "<thead>";
                                                 echo "<tr>";

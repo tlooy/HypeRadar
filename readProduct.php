@@ -67,9 +67,6 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     	echo "Trouble with the mysql_prepare()";
     }
     
-    // Close statement
-    mysqli_stmt_close($stmt);
-    
     // Close connection
     mysqli_close($conn);
 
@@ -163,8 +160,6 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                                 }
                                 echo "</tbody>";                            
                             echo "</table>";
-                            // Free result set
-                            mysqli_free_result($result);
                         } else{
                             echo '<div class="alert alert-danger"><em>No records were found.</em></div>';
                         }

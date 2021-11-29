@@ -44,8 +44,6 @@
                         echo "Oops! Something went wrong. Please try again later.";
                     }
  
-                    // Close connection
-                    mysqli_close($link);
                     ?>
                 </div>
             </div>
@@ -89,8 +87,6 @@
                         echo "Oops! Something went wrong. Please try again later.";
                     }
  
-                    // Close connection
-                    mysqli_close($link);
                     ?>
                 </div>
             </div>        
@@ -134,8 +130,6 @@
                         echo "Oops! Something went wrong. Please try again later.";
                     }
  
-                    // Close connection
-                    mysqli_close($link);
                     ?>
                 </div>
             </div>        
@@ -181,7 +175,7 @@
                     }
  
                     // Close connection
-                    mysqli_close($link);
+                    mysqli_close($conn);
                     ?>
                 </div>
             </div>        
