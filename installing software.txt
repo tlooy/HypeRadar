@@ -50,8 +50,9 @@ Exporting and Importing the mysql database
 	https://www.digitalocean.com/community/tutorials/how-to-import-and-export-databases-in-mysql-or-mariadb
 	
 	
-	
+***********************	
 AWS Lightsail Install
+***********************
 	Create an AWS Account: email address + TLA**##!
 	AWS account name = ThomasLooy
 	Create OS Only instance for Ubuntu 20.04
@@ -90,8 +91,8 @@ AWS Lightsail Install
 			MySQL [(none)]> use testing;
 			MySQL [testing]> exit;
 			From the Ubuntu command line at /var/www/html/HypeRadar enter the following:
-				cat data-dump.sql | mysql --host ls-c48031d8325b51d2cd3809f851b1d421917e17a0.c9ytyx5wmt8t.us-west-2.rds.amazonaws.com --user dbmasteruser --password
-
+				// cat data-dump.sql | mysql --host ls-c48031d8325b51d2cd3809f851b1d421917e17a0.c9ytyx5wmt8t.us-west-2.rds.amazonaws.com --user dbmasteruser --password
+			To create the tables in the database, run createTableProduct.sql
 
 			create database testing;
 			use testing;
@@ -140,10 +141,3 @@ Created a config.php file with your local database connection details (Note:conf
 	?>
 
 
-	 
-Installed Discord
-	sudo snap install discord
-		
-		
-		
-		

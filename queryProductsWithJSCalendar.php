@@ -1,5 +1,6 @@
 <?php
 // Include config file
+	require_once("./header.php"); 
 	require_once "./config.php";
 	
 	$selected_product = $selected_genre = $selected_franchise = "--";
@@ -41,33 +42,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Query Product</title>
+	<title>Query Product</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="src/calendarjs.css" />
 
-
-    <meta name="viewport" content="width=device-width, initial-scale=1" user-scalable="no">
-    <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="src/calendarjs.css" />
-    <script src="src/calendarjs.js"></script>
-
-
-
-    <style>
-        .wrapper{
-            width: 800px;
-            margin: 0 auto;
-        }
-    </style>
+	<script src="src/calendarjs.js"></script>
 </head>
-<body>
-    <?php require_once("./headerUser.php"); ?>	
 
+<body>
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -121,7 +103,7 @@
                         <a href="./index.php" class="btn btn-secondary ml-2">Cancel</a>
 
 		        <div class="contents">
-				<div id="myCalendar" style="max-width: 800px;">
+				<div id="myCalendar" style="min-width: 1000px;">
 			                <p>The JavaScript Calendar goes here...</p>
 				</div>
 			</div>
