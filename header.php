@@ -51,8 +51,12 @@
 	<nav>
 		<div class="wrapper">
 			<ul>
-				<li> <a href="index.php"> Admin </a> </li>
+				<li> <a href="admin.php"> Admin </a> </li>
 				<li> <a href="queryProductsWithJSCalendar.php"> User </a> </li>
+				<li> <a href="signup.php"> Sign Up </a> </li>
+				<li> <a href="profile.php"> Your Profile </a> </li>
+				<li> <a href="login.php"> Log In </a> </li>
+				<li> <a href="logout.php"> Log Out </a> </li>
 			</ul>
 		
 		</div>	
@@ -64,8 +68,7 @@
 			<img src="dbsfgid-6af8edba-90a5-45b0-aac4-7df242cf735e.gif" alt="Radar" width="150" height="150">
 		</div>
 		<div class="title">
-			<h1>Hype Radar! Administration</h1>
-			<h2>So what are they waiting for?</h2>
+			<h1>Hype Radar!</h1>
 		</div>
 	</div>
 

@@ -57,4 +57,11 @@ CREATE TABLE comments (
 
 );
 
+CREATE TABLE users (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(100) NOT NULL,
+    userid VARCHAR(100) NOT NULL,
+    useremail VARCHAR(100) NOT NULL,
+    userpwd VARCHAR(100) NOT NULL
+);
 
