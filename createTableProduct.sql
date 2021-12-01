@@ -61,7 +61,8 @@ CREATE TABLE users (
     username VARCHAR(100) NOT NULL,
     userid VARCHAR(100) NOT NULL,
     useremail VARCHAR(100) NOT NULL,
-    userpwd VARCHAR(100) NOT NULL
+    userpwd VARCHAR(100) NOT NULL,
+    userrole VARCHAR(20) DEFAULT 'User'
 );
 
 CREATE TABLE subscriptions (
@@ -78,4 +79,4 @@ CREATE TABLE subscriptions (
       ON DELETE RESTRICT
 );
 
-
+ALTER TABLE users ADD COLUMN userrole VARCHAR(20) DEFAULT 'User';

@@ -1,11 +1,11 @@
 <?php
 // Include config file
-require_once("./header.php"); 
+require_once "./header.php"; 
 require_once "./config.php";
  
 // Define variables and initialize with empty values
-$username = $userid = $useremail = $userpwd = $validatingpwd = "";
-$emptyinput_err = $username_err = $userid_err = $useremail_err = $pwd_err = $vadidatingpwd_err = $duplicateidoremail_err = "";
+$username = $userid = $useremail = $userpwd = $confirmingpwd = "";
+$emptyinput_err = $username_err = $userid_err = $useremail_err = $userpwd_err = $confirmingpwd_err = $duplicateidoremail_err = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -13,7 +13,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	$input_userid 		= trim($_POST["userid"]);
 	$input_useremail	= trim($_POST["useremail"]);
 	$input_userpwd 	= trim($_POST["userpwd"]);
-	$input_validatingpwd 	= trim($_POST["validatingpwd"]);
+	$input_confirmingpwd 	= trim($_POST["confirmingpwd"]);
 
 	if(empty($input_username) || empty($input_userid) || empty($input_useremail) || empty($input_userpwd) || empty($input_validatingpwd)){
 		$emptyinput_err = "Please enter values in all fields.";
@@ -43,9 +43,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$userpwd = $input_userpwd;
 	}
 
-	if($input_userpwd != $input_validatingpwd){
+	if(!filter_var($input_confirminguserpwd, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z0-9\s]+$/")))){
+		$confirminguserpwd_err = "Please enter a valid password (numbers and letters only).";
+	} else{
+		$confirminguserpwd = $input_confirminguserpwd;
+	}
+
+	if($input_userpwd != $input_confirmingpwd){
+echo "$input_userpwd != $input_confirmingpwd";
 		$validatingpwd_err = "Passwords do not match.";
-		header("location: ./signup.php?pwdvalidationerror");
+//		header("location: ./signup.php?pwdvalidationerror");
 		exit();
 	}
 
@@ -75,7 +82,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
          
 		if($stmt = mysqli_prepare($conn, $sql)){
 			// Bind variables to the prepared statement as parameters
-			mysqli_stmt_bind_param($stmt, "ssss", $username, $userid, $useremail, $userpwd);
+			$hashed_userpwd = password_hash($userpwd, PASSWORD_DEFAULT);
+			mysqli_stmt_bind_param($stmt, "ssss", $username, $userid, $useremail, $hashed_userpwd);
             
 			// Attempt to execute the prepared statement
 			if(mysqli_stmt_execute($stmt)){
@@ -141,8 +149,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                         <div class="form-group">
                             <label>Confirm Password</label>
-                            <input type="password" name="validatingpwd" class="form-control <?php echo (!empty($validatingpwd)) ? 'is-invalid' : ''; ?>" value="<?php echo $validatingpwd; ?>">
-                            <span class="invalid-feedback"><?php echo $validatingpwd_err;?></span>
+                            <input type="password" name="confirmingpwd" class="form-control <?php echo (!empty($confirmingpwd)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirmingpwd; ?>">
+                            <span class="invalid-feedback"><?php echo $confirmingpwd_err;?></span>
 
                         </div>
                         <input type="submit" class="btn btn-primary" value="Submit">
@@ -156,7 +164,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     <?php
 	    if (isset($_GET["duperror"])) {
-    		echo ("Duplicate User ID or eMail address.");
+    		echo ("User ID or eMail address already used.");
 	    }
 
 	    if (isset($_GET["pwdvalidationerror"])) {
