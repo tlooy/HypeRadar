@@ -50,13 +50,25 @@
 <body>
 	<nav>
 		<div class="wrapper">
-			<ul>
-				<li> <a href="admin.php"> Admin </a> </li>
-				<li> <a href="queryProductsWithJSCalendar.php"> User </a> </li>
-				<li> <a href="signup.php"> Sign Up </a> </li>
-				<li> <a href="profile.php"> Your Profile </a> </li>
-				<li> <a href="login.php"> Log In </a> </li>
-				<li> <a href="logout.php"> Log Out </a> </li>
+			<ul class="nav justify-content-end">
+				<li class="nav-item">
+					<a class="nav-link active" href="admin.php">Admin</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" href="queryProductsWithJSCalendar.php">User</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" href="profile.php">My Profile</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" href="signup.php">Sign Up</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" href="login.php">Sign In</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" href="logout.php">Sign Out</a>
+				</li>
 			</ul>
 		
 		</div>	

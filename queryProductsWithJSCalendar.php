@@ -1,6 +1,5 @@
 <?php
-// Include config file
-	require_once("./header.php"); 
+	require_once "./header.php"; 
 	require_once "./config.php";
 	
 	$selected_product = $selected_genre = $selected_franchise = "--";
@@ -14,11 +13,23 @@
 	$all_products = mysqli_query($conn,$sqlProducts);
 
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
-		$sql_select_list = "SELECT 	P.id, P.name product_name, P.description product_description, P.genre_id, " . 
-						" P.franchise_id, G.name genre_name, F.name franchise_name, P.release_dt, P.release_dt_status, P.price " . 
-				  " FROM 	products P, genres G, franchises F " . 
-				  " WHERE 	P.genre_id = G.id " . 
-				  " AND 	P.franchise_id = F.id ";
+		if (isset($_POST["QueryAll"])) {
+			$sql_select_list = "SELECT 	P.id, P.name product_name, P.description product_description, P.genre_id, " . 
+							" P.franchise_id, G.name genre_name, F.name franchise_name, P.release_dt, P.release_dt_status, P.price " . 
+					  " FROM 	products P, genres G, franchises F " . 
+					  " WHERE 	P.genre_id = G.id " . 
+					  " AND 	P.franchise_id = F.id ";
+		}    	
+
+		elseif (isset($_POST["QueryMine"])) {
+			$sql_select_list = "SELECT 	P.id, P.name product_name, P.description product_description, P.genre_id, " . 
+							" P.franchise_id, G.name genre_name, F.name franchise_name, P.release_dt, P.release_dt_status, P.price " . 
+					  " FROM 	products P, genres G, franchises F, subscriptions S " . 
+					  " WHERE 	P.genre_id = G.id " . 
+					  " AND 	P.franchise_id = F.id " .
+					  " AND 	S.user_id = 1 " .
+					  " AND 	S.product_id = P.id ";
+		}	
 		$selected_product   = $_POST["selected_product"]; 
 		$selected_genre     = $_POST["selected_genre"]; 
 		$selected_franchise = $_POST["selected_franchise"]; 
@@ -35,8 +46,7 @@
 			$sql_select = $sql_select_list;		
 		}
 		$result = mysqli_query($conn, $sql_select);
-	}    	
-
+	}
 ?>
 
 <!DOCTYPE html>
@@ -99,7 +109,8 @@
 					<?php endwhile; ?>
 				</select>
                         </div>
-                        <input type="submit" class="btn btn-primary" value="Query">
+                        <input type="submit" class="btn btn-primary" name="QueryMine" value="Query Mine">
+                        <input type="submit" class="btn btn-primary" name="QueryAll"  value="Query All">
                         <a href="./index.php" class="btn btn-secondary ml-2">Cancel</a>
 
 		        <div class="contents">
@@ -137,7 +148,7 @@
                                                      echo "<td>" . $row['genre_name'] 		. "</td>";
                                                      echo "<td>" . $row['franchise_name'] 		. "</td>";
                                                      echo "<td>" . $row['release_dt'] 		. "</td>";
-                                                     echo "<td>" . $row['release_dt_status'] 		. "</td>";
+                                                     echo "<td>" . $row['release_dt_status'] 	. "</td>";
                                                      echo "<td>" . $row['price'] 			. "</td>";
 		                                     echo "<td>";
                                                          echo '<a href="./readProductComments.php?id=' . $row['id'] .'" class="mr-3" title="View Comments" data-toggle="tooltip"><span class="fa fa-book"></span></a>';

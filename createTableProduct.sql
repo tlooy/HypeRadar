@@ -36,7 +36,6 @@ CREATE TABLE products (
     FOREIGN KEY (franchise_id)
       REFERENCES franchises(id)
       ON DELETE RESTRICT
-
 );
 
 CREATE TABLE comments (
@@ -64,4 +63,19 @@ CREATE TABLE users (
     useremail VARCHAR(100) NOT NULL,
     userpwd VARCHAR(100) NOT NULL
 );
+
+CREATE TABLE subscriptions (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    product_id INT NOT NULL,
+
+    FOREIGN KEY (user_id)
+      REFERENCES users(id)
+      ON DELETE RESTRICT,
+    
+    FOREIGN KEY (product_id)
+      REFERENCES products(id)
+      ON DELETE RESTRICT
+);
+
 
