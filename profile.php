@@ -18,12 +18,7 @@ require_once "./config.php";
 				<div class="col-md-12">
 					<h2 class="mt-5">My Profile</h2>
 					<p>List of Subscriptions in My Profile.</p>
-					<p>Note: the Add New Subscriptions form and the Delete Subscriptions icon are not functional yet...</p>
-					<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-						<input type="submit" class="btn btn-primary" value="Submit">
-						<a href="./index.php" class="btn btn-secondary ml-2">Cancel</a>
-
-					</form>
+					<p>Note: the Add New Subscriptions form and the Delete Subscriptions icon are not functional yet...</p>			
 				</div>
 			</div>        
    
