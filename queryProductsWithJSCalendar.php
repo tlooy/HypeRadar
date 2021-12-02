@@ -27,8 +27,9 @@
 					  " FROM 	products P, genres G, franchises F, subscriptions S " . 
 					  " WHERE 	P.genre_id = G.id " . 
 					  " AND 	P.franchise_id = F.id " .
-					  " AND 	S.user_id = 1 " .
-					  " AND 	S.product_id = P.id ";
+					  " AND 	S.product_id = P.id " .
+					  " AND 	S.user_id = " . $_SESSION["id"];
+
 		}	
 		$selected_product   = $_POST["selected_product"]; 
 		$selected_genre     = $_POST["selected_genre"]; 

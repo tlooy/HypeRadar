@@ -48,9 +48,10 @@
 			}
 			elseif  ($checkPwd === true) {
 				session_start();
-				$_SESSION["userid"]   = $row["userid"];
-				$_SESSION["username"] = $row["username"];
-				$_SESSION["userrole"] = $row["userrole"];
+				$_SESSION["id"]   	= $row["id"];
+				$_SESSION["userid"]   	= $row["userid"];
+				$_SESSION["username"] 	= $row["username"];
+				$_SESSION["userrole"] 	= $row["userrole"];
 				header("location: ./index.php");
 				exit();		
 			}

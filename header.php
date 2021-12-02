@@ -18,7 +18,7 @@
 
 	<style>
 	        .wrapper {
-		        width: 600px;
+		        width: 800px;
 			margin: 0 auto;
 		}
 		table tr td:last-child {
@@ -76,6 +76,7 @@
 						echo "Hello " . $_SESSION['username'];
 						echo ".  You are signed in with User ID " . $_SESSION['userid'];
 						echo " and your Role is " . $_SESSION['userrole'];
+						echo " and users.id = " . $_SESSION['id'];
 					}
 					else {
 						echo "<li class='nav-item'> <a class='nav-link active' href='signup.php'>Sign Up</a> </li>";
