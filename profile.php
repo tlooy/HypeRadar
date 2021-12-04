@@ -23,11 +23,11 @@ require_once "./config.php";
 			</div>        
    
 			<div class="mt-5 mb-3 clearfix">
-				<h2 class="pull-left">Product List</h2>
+				<h2 class="pull-left">My Product Subscriptions</h2>
 				<a href="./createSubscriptions.php" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add New Subscriptions</a>
 			</div>
 			<?php                    
-				$sql = "SELECT P.id, P.name product_name, P.release_dt, G.name genre_name, F.name franchise_name " .
+				$sql = "SELECT S.id, P.name product_name, P.release_dt, G.name genre_name, F.name franchise_name " .
 					" FROM products P, genres G, franchises F, subscriptions S " .
 					"WHERE P.genre_id = G.id AND P.franchise_id = F.id " .
 					"  AND S.product_id = P.id" . 
@@ -49,7 +49,7 @@ require_once "./config.php";
 							echo "<td width=25%>" . $row['franchise_name'] . "</td>";
 							echo "<td width=25%>" . $row['release_dt'] . "</td>";
 							echo "<td width=25%>";
-							echo '<a href="./deleteSubscription.php?id=' . $row['id'] .'&table=products'.'" title="Delete Subscription" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
+							echo '<a href="./deleteSubscription.php?id=' . $row['id'] . '" title="Delete Subscription" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
 							echo "</td>";
 							echo "</tr>";
 						}
