@@ -52,7 +52,7 @@ CREATE TABLE events (
     event_type_id INT,
     genre_id INT,
     franchise_id INT,
-    event_from_datetime DATE,
+    event_from_datetime DATE NOT NULL,
     event_to_datetime DATE,
     event_status VARCHAR(20), 
     price DECIMAL (10, 2),

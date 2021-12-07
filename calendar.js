@@ -83,8 +83,8 @@ var index = 0;
 while ( index < arrayProductObjects.length) {
         var event =  {};
 // Changing the date format so the event shows on the correct day on the calendar
-	event.from = arrayProductObjects[index].date.replace(/-/g, '\/');
-	event.to   = arrayProductObjects[index].date.replace(/-/g, '\/');
+	event.from = arrayProductObjects[index].fromdate.replace(/-/g, '\/');
+	event.to   = arrayProductObjects[index].todate.replace(/-/g, '\/');
 event.title = arrayProductObjects[index].name;
 returnEventsArray.push(event);
 	index++;

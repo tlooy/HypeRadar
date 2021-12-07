@@ -151,7 +151,7 @@
 
                         <div class="form-group">
                             <label>Price</label>
-                            <input type="number" name="Price" class="form-control value="<?php echo $price; ?>">
+                            <input type="number" name="Price" step="0.01" class="form-control value="<?php echo $price; ?>">
                             <span class="invalid-feedback"><?php echo $price_err;?></span>
                         </div>
 

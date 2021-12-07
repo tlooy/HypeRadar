@@ -42,7 +42,7 @@
 		$eventStatus 	= mysqli_real_escape_string($conn,$_POST['ReleaseDtStatus']);
 		$price		 	= mysqli_real_escape_string($conn,$_POST['Price']);
 		
-		if(!empty($_POST['EventFromDateTime'])) {
+		if(!empty($_POST['EventFromDatetime'])) {
 			$rawEventFromDatetime 	= mysqli_real_escape_string($conn,$_POST['EventFromDatetime']);
 			$eventFromDatetime		= date('Y-m-d', strtotime($rawEventFromDatetime));
 		} else {
@@ -72,7 +72,7 @@
 	       		    $param_genreId 				= $genreId;
 	       		    $param_franchiseId 			= $franchiseId;
 	       		    $param_eventFromDatetime	= $eventFromDatetime;
-	       		    $param_eventtoDatetime 		= $eventToDatetime;
+	       		    $param_eventToDatetime 		= $eventToDatetime;
 	       		    $param_eventStatus 			= $releaseDtStatus;
 	       		    $param_price	 			= $price;
 
@@ -165,7 +165,7 @@
 
                         <div class="form-group">
                             <label>Event From Date</label>
-                            <input type="date" name="EventFromDatetime" class="form-control" value="<?php echo $eventFromDatetime; ?>">
+                            <input type="date" required name="EventFromDatetime" class="form-control" value="<?php echo $eventFromDatetime; ?>">
                             <span class="invalid-feedback"><?php echo $eventFromDate_err;?></span>
                         </div>
 
@@ -177,13 +177,13 @@
 
                         <div class="form-group">
                             <label>Event Status</label>
-                            <input type="text" name="EventStatus" class="form-control value="<?php echo $eventStatus; ?>">
+                            <input type="text" name="EventStatus" class="form-control value="<?php echo $eventStatus; ?>>
                             <span class="invalid-feedback"><?php echo $eventStatus_err;?></span>
                         </div>
 
                         <div class="form-group">
                             <label>Price</label>
-                            <input type="number" name="Price" class="form-control value="<?php echo $price; ?>">
+                            <input type="number" name="Price" step="0.01" class="form-control value="<?php echo $price; ?>>
                             <span class="invalid-feedback"><?php echo $price_err;?></span>
                         </div>
 
