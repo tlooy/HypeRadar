@@ -1,6 +1,7 @@
 <?php
 // Include config file
 require_once "./config.php";
+require_once "./header.php";
  
 // Define variables and initialize with empty values
 $name = $description = "";
@@ -119,12 +120,6 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 <head>
     <meta charset="UTF-8">
     <title>Update Record</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .wrapper{
-            width: 600px;
-            margin: 0 auto;
-        }
     </style>
 </head>
 <body>
@@ -148,7 +143,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                         <input type="hidden" name="id" value="<?php echo $id; ?>"/>
                         <input type="hidden" name="table" value="<?php echo $table; ?>"/>
                         <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="./index.php" class="btn btn-secondary ml-2">Cancel</a>
+                        <a href="./admin.php" class="btn btn-secondary ml-2">Cancel</a>
                     </form>
                 </div>
             </div>        

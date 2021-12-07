@@ -57,10 +57,6 @@
 					<a class="nav-link active" href="index.php">Home</a>
 				</li>
 
-				<li class="nav-item">
-					<a class="nav-link active" href="queryProductsWithJSCalendar.php">Calendar</a>
-				</li>
-
 				<?php
 					if (isset($_SESSION["userrole"])) {
 						if ($_SESSION["userrole"] == 'Admin') {
@@ -71,6 +67,8 @@
 
 				<?php
 					if (isset($_SESSION["username"])) {
+						echo "<li class='nav-item'> <a class='nav-link active' href='queryProductsWithJSCalendar.php'>Calendar</a> </li>";
+						echo "<li class='nav-item'> <a class='nav-link active' href='eventCalendar.php'>*New Event Calendar*</a> </li>";
 						echo "<li class='nav-item'> <a class='nav-link active' href='profile.php'>My Profile</a> </li>";
 						echo "<li class='nav-item'> <a class='nav-link active' href='logout.php'>Sign Out</a> </li>";
 						echo "Hello " . $_SESSION['username'];

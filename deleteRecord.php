@@ -66,7 +66,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                             <p>Are you sure you want to delete this record?</p>
                             <p>
                                 <input type="submit" value="Yes" class="btn btn-danger">
-                                <a href="./index.php" class="btn btn-secondary">No</a>
+                                <a href="./admin.php" class="btn btn-secondary">No</a>
                             </p>
                         </div>
                     </form>

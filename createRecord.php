@@ -1,6 +1,7 @@
 <?php
 // Include config file
 require_once "./config.php";
+require_once "./header.php";
  
 // Define variables and initialize with empty values
 $name = $description = "";
@@ -45,7 +46,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records created successfully. Redirect to landing page
-                header("location: ./index.php");
+                header("location: ./admin.php");
                 exit();
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
@@ -95,7 +96,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         <input type="submit" class="btn btn-primary" value="Submit">
                         <input type="hidden" name="table" value="<?php echo trim($_GET["table"]); ?>"/>
 
-                        <a href="./index.php" class="btn btn-secondary ml-2">Cancel</a>
+                        <a href="./admin.php" class="btn btn-secondary ml-2">Cancel</a>
                     </form>
                 </div>
             </div>        

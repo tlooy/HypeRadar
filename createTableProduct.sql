@@ -18,6 +18,13 @@ CREATE TABLE franchises (
     description VARCHAR(255) NOT NULL
 );
 
+
+CREATE TABLE event_types (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE products (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -37,6 +44,33 @@ CREATE TABLE products (
       REFERENCES franchises(id)
       ON DELETE RESTRICT
 );
+
+CREATE TABLE events (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    event_type_id INT,
+    genre_id INT,
+    franchise_id INT,
+    event_from_datetime DATE,
+    event_to_datetime DATE,
+    event_status VARCHAR(20), 
+    price DECIMAL (10, 2),
+    
+    FOREIGN KEY (genre_id)
+      REFERENCES genres(id)
+      ON DELETE RESTRICT,
+    
+    FOREIGN KEY (franchise_id)
+      REFERENCES franchises(id)
+      ON DELETE RESTRICT,
+
+    FOREIGN KEY (event_type_id)
+      REFERENCES event_types(id)
+      ON DELETE RESTRICT
+);
+
+
 
 CREATE TABLE comments (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,

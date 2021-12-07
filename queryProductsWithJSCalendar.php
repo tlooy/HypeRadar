@@ -151,13 +151,13 @@
                                                      echo "<td>" . $row['release_dt'] 		. "</td>";
                                                      echo "<td>" . $row['release_dt_status'] 	. "</td>";
                                                      echo "<td>" . $row['price'] 			. "</td>";
-		                                     echo "<td>";
-                                                         echo '<a href="./readProductComments.php?id=' . $row['id'] .'" class="mr-3" title="View Comments" data-toggle="tooltip"><span class="fa fa-book"></span></a>';
-	                                             echo "</td>";
+                                                     echo "<td>";
+                                                     echo '<a href="./readProductComments.php?id=' . $row['id'] .'" class="mr-3" title="View Comments" data-toggle="tooltip"><span class="fa fa-book"></span></a>';
+	                                                 echo "</td>";
                                                      echo "</tr>";
-						      $result_array[] = array('date' => $row['release_dt'], 'name' => $row['product_name']);
+						                             $result_array[] = array('date' => $row['release_dt'], 'name' => $row['product_name']);
                                                 }
-						 $json_array = json_encode($result_array);
+                                                $json_array = json_encode($result_array);
                                                 echo "</tbody>";                            
                                                 echo "</table>";
                                                 // Free result set
