@@ -7,11 +7,11 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     // Include config file
 
     // Prepare a select statements
-    $sql_event   	= "SELECT * FROM events WHERE id = ?";
-    $sql_genre 	    = "SELECT * FROM genres WHERE id = ?";
-    $sql_franchise 	= "SELECT * FROM franchises WHERE id = ?";
-    $sql_event_type = "SELECT * FROM event_types WHERE id = ?";
-    $sql_comments 	= "SELECT * FROM comments WHERE event_id = ? order by create_dt desc";
+    $sql_event   	    = "SELECT * FROM events WHERE id = ?";
+    $sql_genre 	        = "SELECT * FROM genres WHERE id = ?";
+    $sql_franchise 	    = "SELECT * FROM franchises WHERE id = ?";
+    $sql_event_type     = "SELECT * FROM event_types WHERE id = ?";
+    $sql_notifications 	= "SELECT * FROM notifications WHERE event_id = ? order by create_datetime desc";
     
     if($stmt_event = mysqli_prepare($conn, $sql_event)){
         // Bind variables to the prepared statement as parameters
@@ -61,11 +61,11 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                 $row_franchise 	= mysqli_fetch_array($result_franchise, MYSQLI_ASSOC);
                 $franchise_name 	= $row_franchise["name"];
 
-                // Retrieve Comments using Id
-                $stmt_comments = mysqli_prepare($conn, $sql_comments);
-	            mysqli_stmt_bind_param($stmt_comments, "i", $param_event_id);
-                mysqli_stmt_execute($stmt_comments);
-	            $result_comments 	= mysqli_stmt_get_result($stmt_comments);
+                // Retrieve notifications using Id
+                $stmt_notifications = mysqli_prepare($conn, $sql_notifications);
+	            mysqli_stmt_bind_param($stmt_notifications, "i", $param_event_id);
+                mysqli_stmt_execute($stmt_notifications);
+	            $result_notifications 	= mysqli_stmt_get_result($stmt_notifications);
 
             } else{
                 // URL doesn't contain valid id parameter. Redirect to error page
@@ -151,21 +151,25 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mt-5 mb-3 clearfix">
-                                <h2 class="pull-left">Event Comments</h2>
-                                <?php echo '<a href="./createEventComment.php?id=' . $param_event_id . '" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add Event Comment</a>'; ?>
+                                <h2 class="pull-left">Event Notifications</h2>
+                                <?php echo '<a href="./createEventNotification.php?id=' . $param_event_id . '" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add Event Notification</a>'; ?>
                             </div>
 
                             <?php
-                                if(mysqli_num_rows($result_comments) > 0) {
+                                if(mysqli_num_rows($result_notifications) > 0) {
                                     echo '<table class="table table-bordered table-striped">';
-                                        echo "<thead> <tr> <th> Comment </th> </tr> </thead>";
+                                        echo "<thead> <tr>"; 
+                                            echo "<th> Topic  </th>";
+                                            echo "<th> Status </th>";
+                                        echo "</tr> </thead>";
                                         echo "<tbody>";
-                                        while($row = mysqli_fetch_array($result_comments)){
+                                        while($row = mysqli_fetch_array($result_notifications)){
                                             echo "<tr>";
-                                                echo "<td width=75%>" . $row['comment'] . "</td>";
+                                                echo "<td width=50%>" . $row['topic']  . "</td>";
+                                                echo "<td width=25%>" . $row['status'] . "</td>";
                                                 echo "<td width=25%>";
-                                                    echo '<a href="./updateEventComment.php?id=' . $row['id'] .'" class="mr-3" title="Update Comment" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
-                                                    echo '<a href="./deleteEventComment.php?id=' . $row['id'] .'&table=events'.'" title="Delete Comment" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
+                                                    echo '<a href="./updateEventNotification.php?id=' . $row['id'] .'" class="mr-3" title="Update Notification" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
+                                                    echo '<a href="./deleteEventNotification.php?id=' . $row['id'] .'&table=events'.'" title="Delete Notification" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
                                                 echo "</td>";
                                             echo "</tr>";
                                         }
@@ -177,8 +181,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                             ?>
                     </div>
                 </div>        
-
-                    <p><a href="./admin.php" class="btn btn-primary">Back</a></p>
+                <button class="btn btn-secondary ml-2" onclick="history.back()"> Go Back </button>
                 </div>
             </div>        
         </div>

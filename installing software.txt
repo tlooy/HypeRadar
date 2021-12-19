@@ -160,3 +160,13 @@ Installing Apache and PHP on MacOS
 Installing git on MacOS
 	$brew install git
 	$brew install git-gui
+	
+	
+*************************************	
+* Running Hype Radar on Lightsail
+*************************************
+	Log into signin.aws.amazon.com
+	Username is tlooy24@gmail.com
+	From a terminal session cd /var/www/html/HypeRadar
+		sudo git pull
+	
