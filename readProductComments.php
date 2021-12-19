@@ -4,26 +4,26 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     // Include config file
     require_once "./config.php";
 
-    $param_product_id = trim($_GET["id"]);
+    $param_event_id = trim($_GET["id"]);
 
     // Prepare a select statements
     $sql_comments = 	" SELECT * " . 
-			"   FROM comments C, sources S " .
-			"  WHERE C.source_id = S.id " .
-			"    AND product_id = " . $param_product_id . 
-    			"  ORDER BY create_dt desc";
+			"   FROM notifications N, sources S " .
+			"  WHERE N.source_id = S.id " .
+			"    AND event_id = " . $param_event_id . 
+    			"  ORDER BY create_datetime desc";
 
     if($stmt_comments = mysqli_prepare($conn, $sql_comments)){
         // Bind variables to the prepared statement as parameters
         // Set parameters
 
-        mysqli_stmt_bind_param($stmt_comments, "i", $param_product_id);
+        mysqli_stmt_bind_param($stmt_comments, "i", $param_event_id);
         
         // Attempt to execute the prepared statement
 
         
         if(mysqli_stmt_execute($stmt_comments)){
-            $result_product_comments = mysqli_stmt_get_result($stmt_comments);
+            $result_event_comments = mysqli_stmt_get_result($stmt_comments);
         } else{
             echo "Oops! Something went wrong. Please try again later.";
         }
@@ -48,7 +48,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>View Product</title>
+    <title>View Event Comments</title>
     
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -69,7 +69,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
             <div class="row">
                 <div class="col-md-12">
                     <?php
-                        if(mysqli_num_rows($result_product_comments) > 0){
+                        if(mysqli_num_rows($result_event_comments) > 0){
                             echo '<table class="table table-bordered table-striped">';
                                 echo "<thead>"; 
                                 	 echo "<tr>"; 
@@ -80,7 +80,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                                 	echo "</tr>"; 
                                 echo "</thead>";
                                 echo "<tbody>";
-                                while($row = mysqli_fetch_array($result_product_comments)){
+                                while($row = mysqli_fetch_array($result_event_comments)){
                                     echo "<tr>";
                                     echo "<td >" . $row['comment'] . "</td> ";
                                     echo "<td >" . $row['name'] . "</td>";

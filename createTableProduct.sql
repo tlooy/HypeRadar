@@ -25,26 +25,6 @@ CREATE TABLE event_types (
     description VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE products (
-    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    description VARCHAR(255) NOT NULL,
-    genre_id INT,
-    franchise_id INT,
-    release_dt DATE,
-    release_dt_status VARCHAR(20), 
-    price DECIMAL (10, 2),
-    status VARCHAR(20),
-    
-    FOREIGN KEY (genre_id)
-      REFERENCES genres(id)
-      ON DELETE RESTRICT,
-    
-    FOREIGN KEY (franchise_id)
-      REFERENCES franchises(id)
-      ON DELETE RESTRICT
-);
-
 CREATE TABLE events (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -53,7 +33,7 @@ CREATE TABLE events (
     genre_id INT,
     franchise_id INT,
     event_from_datetime DATE NOT NULL,
-    event_to_datetime DATE,
+    event_to_datetime DATE NOT NULL,
     event_status VARCHAR(20), 
     price DECIMAL (10, 2),
     
@@ -71,25 +51,6 @@ CREATE TABLE events (
 );
 
 
-
-CREATE TABLE comments (
-    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    product_id INT,
-    comment VARCHAR(255) NOT NULL,
-    source_id INT,
-    hyperlink VARCHAR(255),
-    create_dt DATE,
-
-    FOREIGN KEY (product_id)
-      REFERENCES products(id)
-      ON DELETE RESTRICT,
-
-    FOREIGN KEY (source_id)
-      REFERENCES sources(id)
-      ON DELETE RESTRICT
-
-);
-
 CREATE TABLE users (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(100) NOT NULL,
@@ -102,15 +63,40 @@ CREATE TABLE users (
 CREATE TABLE subscriptions (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
-    product_id INT NOT NULL,
+    event_id INT NOT NULL,
 
     FOREIGN KEY (user_id)
       REFERENCES users(id)
       ON DELETE RESTRICT,
     
-    FOREIGN KEY (product_id)
-      REFERENCES products(id)
+    FOREIGN KEY (event_id)
+      REFERENCES events(id)
       ON DELETE RESTRICT
 );
 
-ALTER TABLE users ADD COLUMN userrole VARCHAR(20) DEFAULT 'User';
+
+CREATE TABLE notifications (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    event_id INT NOT NULL,
+    topic VARCHAR(200),
+    source_id INT,
+    status VARCHAR(20),
+    create_datetime DATE,
+    sent_datetime DATE,
+
+    FOREIGN KEY (event_id)
+      REFERENCES events(id)
+      ON DELETE RESTRICT,
+
+    FOREIGN KEY (source_id)
+      REFERENCES sources(id)
+      ON DELETE RESTRICT
+);
+
+DROP TABLE subscriptions;
+CREATE TABLE subscriptions...
+DROP TABLE comments;
+CREATE TABLE notifications...
+DROP TABLE products;
+
+

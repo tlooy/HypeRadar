@@ -140,4 +140,23 @@ Created a config.php file with your local database connection details (Note:conf
 		}
 	?>
 
-
+***********************************************************
+* Getting HypeRadar development onto a Mac (Intel based)
+***********************************************************
+Installing Apache and PHP on MacOS
+	Install Homebrew for package management
+		Install the homebrew version of Apache
+		Install the homebrew version of PHP@7.4
+	edit usr/local/etc/httpd/httpd.conf to get Apache to run PHP files
+		default directory: /usr/local/var/www
+		https://medium.com/@crmcmullen/how-to-install-apache-on-macos-10-13-high-sierra-and-10-14-mojave-using-homebrew-3cb6bf6e3cd4
+		https://wpbeaches.com/install-apache-mysql-php-on-macos-11-big-sur-and-earlier-macos/
+			Also uncomment the line that disables php
+			LoadModule for php7.4
+			Include index.php in Directories
+		Include the process handler 
+	to start apache: $sudo apachectl start (this is the same as doing a brew services start httpd)
+	
+Installing git on MacOS
+	$brew install git
+	$brew install git-gui

@@ -1,5 +1,6 @@
 <?php
     require_once "./config.php";
+    require_once "./header.php";
 
 // Process delete operation after confirmation
 if(isset($_POST["id"]) && !empty($_POST["id"])){

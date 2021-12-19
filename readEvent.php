@@ -11,7 +11,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     $sql_genre 	    = "SELECT * FROM genres WHERE id = ?";
     $sql_franchise 	= "SELECT * FROM franchises WHERE id = ?";
     $sql_event_type = "SELECT * FROM event_types WHERE id = ?";
-    $sql_comments 	= "SELECT * FROM comments WHERE product_id = ? order by create_dt desc";
+    $sql_comments 	= "SELECT * FROM comments WHERE event_id = ? order by create_dt desc";
     
     if($stmt_event = mysqli_prepare($conn, $sql_event)){
         // Bind variables to the prepared statement as parameters
@@ -63,7 +63,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
 
                 // Retrieve Comments using Id
                 $stmt_comments = mysqli_prepare($conn, $sql_comments);
-	            mysqli_stmt_bind_param($stmt_comments, "i", $param_product_id);
+	            mysqli_stmt_bind_param($stmt_comments, "i", $param_event_id);
                 mysqli_stmt_execute($stmt_comments);
 	            $result_comments 	= mysqli_stmt_get_result($stmt_comments);
 
@@ -165,7 +165,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                                                 echo "<td width=75%>" . $row['comment'] . "</td>";
                                                 echo "<td width=25%>";
                                                     echo '<a href="./updateEventComment.php?id=' . $row['id'] .'" class="mr-3" title="Update Comment" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
-                                                    echo '<a href="./deleteEventComment.php?id=' . $row['id'] .'&table=products'.'" title="Delete Comment" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
+                                                    echo '<a href="./deleteEventComment.php?id=' . $row['id'] .'&table=events'.'" title="Delete Comment" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
                                                 echo "</td>";
                                             echo "</tr>";
                                         }

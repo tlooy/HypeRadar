@@ -22,3 +22,7 @@ table tr td:last-child {
 	width: 100%;
 }
 
+}
+.header {
+	position: fixed;
+}

@@ -12,18 +12,21 @@
 	$sqlEvents  = "SELECT * FROM events";
 	$all_events = mysqli_query($conn,$sqlEvents);
 
+    $sql_select = "SELECT  E.id, E.name event_name, E.description event_description, T.name, E.genre_id, " . 
+                         " E.franchise_id, G.name genre_name, F.name franchise_name, E.event_from_datetime, E.event_to_datetime, " .
+                         " E.event_status, E.price "; 
+    $sql_from   = "  FROM  events E, genres G, franchises F, event_types T "; 
+    $sql_where  = " WHERE  E.genre_id = G.id " . 
+                  "   AND  E.franchise_id = F.id " .
+                  "   AND  E.event_type_id = T.id ";
+    $sql = $sql_select . $sql_from . $sql_where;
+
+
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $sql_select = "SELECT  E.id, E.name event_name, E.description event_description, T.name, E.genre_id, " . 
-                             " E.franchise_id, G.name genre_name, F.name franchise_name, E.event_from_datetime, E.event_to_datetime, " .
-                             " E.event_status, E.price "; 
-        $sql_from   = "  FROM  events E, genres G, franchises F, event_types T "; 
-        $sql_where  = " WHERE  E.genre_id = G.id " . 
-                      "   AND  E.franchise_id = F.id " .
-                      "   AND  E.event_type_id = T.id ";
 
 		if (isset($_POST["QueryMine"])) {
 			$sql_from =  $sql_from  . ", subscriptions S "; 
-            $sql_where = $sql_where . " AND S.event_id = P.id AND S.user_id = " . $_SESSION["id"];
+            $sql_where = $sql_where . " AND S.event_id = E.id AND S.user_id = " . $_SESSION["id"];
 		}
 
 		$selected_event     = $_POST["selected_event"]; 
@@ -130,50 +133,53 @@
                             </div>
 
                             <?php
-                                if(isset($result)){ // if we have results in $result then process them
-                                    echo '<table class="table table-bordered table-striped">';
-                                    echo "<thead>";
-                                        echo "<tr>";
-                                            echo "<th>Event Name </th>";
-                                            echo "<th>Description</th>";
-                                            echo "<th>Genre</th>";
-                                            echo "<th>Franchise</th>";
-                                            echo "<th>Event From Date Time</th>";
-                                            echo "<th>Event To Date Time</th>";
-                                            echo "<th>Event Status</th>";
-                                            echo "<th>Price</th>";
-                                            echo "<th>Comments</th>";
-                                        echo "</tr>";
-                                    echo "</thead>";
-                                    echo "<tbody>";
-                                    $result_array = Array();
-                                    while($row = mysqli_fetch_array($result)){
-                                        echo "<tr>";
-                                            echo "<td>" . $row['event_name']          . "</td>";
-                                            echo "<td>" . $row['event_description']   . "</td>";
-                                            echo "<td>" . $row['genre_name']          . "</td>";
-                                            echo "<td>" . $row['franchise_name']      . "</td>";
-                                            echo "<td>" . $row['event_from_datetime'] . "</td>";
-                                            echo "<td>" . $row['event_to_datetime']   . "</td>";
-                                            echo "<td>" . $row['event_status']        . "</td>";
-                                            echo "<td>" . $row['price']               . "</td>";
-                                            echo "<td>";
-                                            echo '<a href="./readProductComments.php?id=' . $row['id'] .'" class="mr-3" title="View Comments" data-toggle="tooltip"><span class="fa fa-book"></span></a>';
-                                            echo "</td>";
-                                        echo "</tr>";
-                                        $result_array[] = array('fromdate' => $row['event_from_datetime'], 
-                                                                'todate'   => $row['event_to_datetime'],
-                                                                'name'     => $row['event_name']);
-                                        }
-                                    $json_array = json_encode($result_array);
-                                    echo "</tbody>";                            
-                                    echo "</table>";
-                                                // Free result set
-                                                mysqli_free_result($result);
-                                } else {
-                                    echo '<div class="alert alert-danger"><em>No records were found.</em></div>';
-                                }
 
+                                if ($result = mysqli_query($conn, $sql)) {
+                                    if(mysqli_num_rows($result) > 0) {
+                                        // if we have results in $result then process them
+                                        echo '<table class="table table-bordered table-striped">';
+                                        echo "<thead>";
+                                            echo "<tr>";
+                                                echo "<th>Event Name </th>";
+                                                echo "<th>Description</th>";
+                                                echo "<th>Genre</th>";
+                                                echo "<th>Franchise</th>";
+                                                echo "<th>Event From Date Time</th>";
+                                                echo "<th>Event To Date Time</th>";
+                                                echo "<th>Event Status</th>";
+                                                echo "<th>Price</th>";
+                                                echo "<th>Comments</th>";
+                                            echo "</tr>";
+                                        echo "</thead>";
+                                        echo "<tbody>";
+                                        $result_array = Array();
+                                        while($row = mysqli_fetch_array($result)){
+                                            echo "<tr>";
+                                                echo "<td>" . $row['event_name']          . "</td>";
+                                                echo "<td>" . $row['event_description']   . "</td>";
+                                                echo "<td>" . $row['genre_name']          . "</td>";
+                                                echo "<td>" . $row['franchise_name']      . "</td>";
+                                                echo "<td>" . $row['event_from_datetime'] . "</td>";
+                                                echo "<td>" . $row['event_to_datetime']   . "</td>";
+                                                echo "<td>" . $row['event_status']        . "</td>";
+                                                echo "<td>" . $row['price']               . "</td>";
+                                                echo "<td>";
+                                                echo '<a href="./readProductComments.php?id=' . $row['id'] .'" class="mr-3" title="View Comments" data-toggle="tooltip"><span class="fa fa-book"></span></a>';
+                                                echo "</td>";
+                                            echo "</tr>";
+                                            $result_array[] = array('fromdate' => $row['event_from_datetime'], 
+                                                                    'todate'   => $row['event_to_datetime'],
+                                                                    'name'     => $row['event_name']);
+                                            }
+                                        $json_array = json_encode($result_array);
+                                        echo "</tbody>";                            
+                                        echo "</table>";
+                                                    // Free result set
+                                                    mysqli_free_result($result);
+                                    } else {
+                                        echo '<div class="alert alert-danger"><em>No records were found.</em></div>';
+                                    }
+                                }
                             ?>
                            </div>
                       </div>

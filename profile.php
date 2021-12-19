@@ -18,36 +18,36 @@ require_once "./config.php";
 				<div class="col-md-12">
 					<h2 class="mt-5">My Profile</h2>
 					<p>List of Subscriptions in My Profile.</p>
-					<p>Note: the Add New Subscriptions form and the Delete Subscriptions icon are not functional yet...</p>			
 				</div>
 			</div>        
    
 			<div class="mt-5 mb-3 clearfix">
-				<h2 class="pull-left">My Product Subscriptions</h2>
+				<h2 class="pull-left">My Event Subscriptions</h2>
 				<a href="./createSubscriptions.php" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add New Subscriptions</a>
 			</div>
 			<?php                    
-				$sql = "SELECT S.id, P.name product_name, P.release_dt, G.name genre_name, F.name franchise_name " .
-					" FROM products P, genres G, franchises F, subscriptions S " .
-					"WHERE P.genre_id = G.id AND P.franchise_id = F.id " .
-					"  AND S.product_id = P.id" . 
+				$sql = "SELECT S.id, E.name event_name, E.event_from_datetime, G.name genre_name, F.name franchise_name " .
+					" FROM events E, genres G, franchises F, subscriptions S " .
+					"WHERE E.genre_id = G.id AND E.franchise_id = F.id " .
+					"  AND S.event_id = E.id" . 
 					"  AND S.user_id = " . $_SESSION["id"];
 				if($result = mysqli_query($conn, $sql)){
 					if(mysqli_num_rows($result) > 0){
 						echo '<table class="table table-bordered table-striped">';
-						echo "<thead>"; 
-						echo "<tr> <th> Product Name </th>";
-						echo "<th> 	Genre</th>";
-						echo "<th> 	Franchise</th>";
-						echo "<th> 	Release Date</th> </tr>";
-						echo "</thead>";
+						echo "<thead> <tr> "; 
+						echo "<th> Event Name 			</th>";
+						echo "<th> Genre 				</th>";
+						echo "<th> Franchise 			</th>";
+						echo "<th> Event From Date 	</th>";
+						echo "<th> Event To Date 		</th>";
+						echo "</tr> </thead>";
 						echo "<tbody>";
 						while($row = mysqli_fetch_array($result)){
 							echo "<tr>";
-							echo "<td width=55%>" . $row['product_name'] . "</td>";
-							echo "<td width=25%>" . $row['genre_name'] . "</td>";
-							echo "<td width=25%>" . $row['franchise_name'] . "</td>";
-							echo "<td width=25%>" . $row['release_dt'] . "</td>";
+							echo "<td width=55%>" . $row['event_name'] 			. "</td>";
+							echo "<td width=25%>" . $row['genre_name'] 			. "</td>";
+							echo "<td width=25%>" . $row['franchise_name'] 		. "</td>";
+							echo "<td width=25%>" . $row['event_from_datetime'] . "</td>";
 							echo "<td width=25%>";
 							echo '<a href="./deleteSubscription.php?id=' . $row['id'] . '" title="Delete Subscription" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
 							echo "</td>";

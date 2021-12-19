@@ -39,7 +39,6 @@
 			float: center;
 			width: 100%;
       		}
-
 	</style>
 
 	<script>
@@ -61,14 +60,16 @@
 					if (isset($_SESSION["userrole"])) {
 						if ($_SESSION["userrole"] == 'Admin') {
 							echo "<li class='nav-item'> <a class='nav-link active' href='admin.php'>Admin</a> </li>";
+							echo "<li class='nav-item'> <a class='nav-link active' href='contributor.php'>Contributor</a> </li>";
+						} elseif ($_SESSION["userrole"] == 'Contributor') {
+							echo "<li class='nav-item'> <a class='nav-link active' href='contributor.php'>Contributor</a> </li>";
 						}
 					}
 				?>
 
 				<?php
 					if (isset($_SESSION["username"])) {
-						echo "<li class='nav-item'> <a class='nav-link active' href='queryProductsWithJSCalendar.php'>Calendar</a> </li>";
-						echo "<li class='nav-item'> <a class='nav-link active' href='eventCalendar.php'>*New Event Calendar*</a> </li>";
+						echo "<li class='nav-item'> <a class='nav-link active' href='eventCalendar.php'>Event Calendar</a> </li>";
 						echo "<li class='nav-item'> <a class='nav-link active' href='profile.php'>My Profile</a> </li>";
 						echo "<li class='nav-item'> <a class='nav-link active' href='logout.php'>Sign Out</a> </li>";
 						echo "Hello " . $_SESSION['username'];

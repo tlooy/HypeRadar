@@ -3,12 +3,12 @@
 	require_once "./config.php";
 	 
 
-	if( isset($_POST['selected_product_ids'])) {
+	if( isset($_POST['selected_event_ids'])) {
 
-		for($x=0 ; $x < count($_POST['selected_product_ids']); $x++) {
+		for($x=0 ; $x < count($_POST['selected_event_ids']); $x++) {
 
-	    	$sql = "INSERT INTO subscriptions (user_id, product_id) " .
-	        	  " VALUES (" .$_SESSION['id'] . ',' . $_POST['selected_product_ids'][$x] . ');';
+	    	$sql = "INSERT INTO subscriptions (user_id, event_id) " .
+	        	  " VALUES (" .$_SESSION['id'] . ',' . $_POST['selected_event_ids'][$x] . ');';
 
 			mysqli_query($conn, $sql);
 		}
@@ -30,41 +30,43 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
-					<h2 class="mt-5">Available Products</h2>
-					<p>List of Products that you currently do not subscribe to.</p>
+					<h2 class="mt-5">Available Events</h2>
+					<p>List of Events that you currently do not subscribe to.</p>
 				</div>
 			</div>        
 			
 			<form action="createSubscriptions.php" method="post">   
 				<?php
 					mysqli_report(MYSQLI_REPORT_ALL ^ MYSQLI_REPORT_INDEX);
-					$sql = "SELECT P.id product_id, P.name product_name, P.release_dt, G.name genre_name, F.name franchise_name " .
-						" FROM products P, genres G, franchises F " .
-						"WHERE P.genre_id = G.id AND P.franchise_id = F.id " .
-						 " AND P.id NOT IN (SELECT S.product_id from subscriptions S WHERE S.user_id = " . $_SESSION["id"] . ")";
+					$sql = "SELECT E.id event_id, E.name event_name, E.event_from_datetime, E.event_to_datetime, G.name genre_name, F.name franchise_name " .
+						" FROM events E, genres G, franchises F " .
+						"WHERE E.genre_id = G.id AND E.franchise_id = F.id " .
+						 " AND E.id NOT IN (SELECT S.event_id from subscriptions S WHERE S.user_id = " . $_SESSION["id"] . ")";
 
 					if($result = mysqli_query($conn, $sql)){
 						if(mysqli_num_rows($result) > 0){
 							echo '<table class="table table-bordered table-striped">';
 							echo "<thead>"; 
-							echo "<tr><th>  </th>";
-							echo "<th> Product Id </th>";
-							echo "<th> Product Name </th>";
-							echo "<th> 	Genre</th>";
-							echo "<th> 	Franchise</th>";
-							echo "<th> 	Release Date</th> </tr>";
+							echo "<tr><th>  				</th>";
+							echo "<th> Event Id 			</th>";
+							echo "<th> Event Name 			</th>";
+							echo "<th> Genres				</th>";
+							echo "<th> Franchise 			</th>";
+							echo "<th> Event From Date 		</th>";
+							echo "<th> Event To Date</th> 	</tr>";
 							echo "</thead>";
 							echo "<tbody>";
-							$selected_product_ids = [];
+							$selected_event_ids = [];
 							while($row = mysqli_fetch_array($result)){
-								$product_id = $row['product_id'];
+								$event_id = $row['event_id'];
 								echo "<tr>";
-								echo "<td><input type='checkbox' name='selected_product_ids[]' value='" . $product_id . "'</td>";
-								echo "<td width=15%>" . $product_id . "</td>";
-								echo "<td width=55%>" . $row['product_name'] . "</td>";
-								echo "<td width=25%>" . $row['genre_name'] . "</td>";
-								echo "<td width=25%>" . $row['franchise_name'] . "</td>";
-								echo "<td width=25%>" . $row['release_dt'] . "</td>";
+								echo "<td><input type='checkbox' name='selected_event_ids[]' value='" . $event_id . "'</td>";
+								echo "<td width=15%>" . $event_id . "</td>";
+								echo "<td width=55%>" . $row['event_name'] 			. "</td>";
+								echo "<td width=25%>" . $row['genre_name'] 			. "</td>";
+								echo "<td width=25%>" . $row['franchise_name'] 		. "</td>";
+								echo "<td width=25%>" . $row['event_from_datetime']	. "</td>";
+								echo "<td width=25%>" . $row['event_to_datetime']	. "</td>";
 								echo "</tr>";
 							}
 							echo "</tbody>";              
