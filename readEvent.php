@@ -37,9 +37,9 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                 $event_status 	     = $row_event["event_status"];
                 $price		 	     = $row_event["price"];
 
-                // Retrieve Event Type Name using event.genre_id
+                // Retrieve Event Type Name using event.event_type_id
                 $stmt_event_type = mysqli_prepare($conn, $sql_event_type);
-                mysqli_stmt_bind_param($stmt_event_type, "i", $genre_id);
+                mysqli_stmt_bind_param($stmt_event_type, "i", $event_type_id);
                 mysqli_stmt_execute($stmt_event_type);
                 $result_event_type   = mysqli_stmt_get_result($stmt_event_type);
                 $row_event_type      = mysqli_fetch_array($result_event_type, MYSQLI_ASSOC);
@@ -81,7 +81,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     }
     
     // Close connection
-    mysqli_close($conn);
+//    mysqli_close($conn);
 
 } else{
     // URL doesn't contain id parameter. Redirect to error page

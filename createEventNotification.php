@@ -59,6 +59,7 @@
 	        	        exit();
 	        	    } else{
 	        	        echo "Oops! Something went wrong. Please try again later.";
+echo mysqli_stmt_error($stmt);
 	        	    }
         		} else {
 	        	        echo "Something went wrong with the mysqli_prepare.";
@@ -117,7 +118,6 @@
                         
                         <input type="hidden" name="EventId" value="<?php echo $id; ?>"/>
                         <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="./readEvent.php?id=" <?php echo $id; ?> class="btn btn-secondary ml-2">Cancel</a>
                     	<button class="btn btn-secondary ml-2" onclick="history.back()"> Go Back </button>
                     </form>
                 </div>

@@ -43,9 +43,9 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             mysqli_stmt_bind_param($stmt, "ssi", $param_name, $param_description, $param_id);
             
             // Set parameters
-            $param_name = $name;
-            $param_description = $description;
-            $param_id = $id;
+            $param_name         = $name;
+            $param_description  = $description;
+            $param_id           = $id;
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){

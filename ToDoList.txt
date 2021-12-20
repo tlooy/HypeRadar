@@ -1,0 +1,15 @@
+Add mysqli error messages on all mysqli calls
+Provide better error messages on mysqli errors for foreign key constraints on deletes of any parent records (i.e. Events, Users)
+Change the delete confirmation pages to modal windows
+Do not allow an Event Notification to be deleted or updated if the notification has been sent
+Clean up css files and <styles> 
+Fix the header so it's always on the top of the page and doesn't scroll
+Make the Cancel and Back buttons consistent, especially when needing to go back to a specific id
+Remove deprecated files from git
+Create the footer 
+Look for a React Native calendar component
+Create Notification Status drop list and table
+Clean up all validation err messages
+Review and update the use of Event Types and Event Genres
+Clean up regex for names, descriptions etc in all forms
+Pass parent record details to the child forms

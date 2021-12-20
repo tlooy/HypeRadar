@@ -52,7 +52,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     // Check input errors before inserting in database
     if(empty($name_err) && empty($description_err)){
         // Prepare an update statement
-        $sql = "UPDATE events SET name=?, description=?, event_type_id=?, genre_id=?, franchise_id=?, event_from_datetime=?, event_to_datetime=?, event_status=?, price=?,  WHERE id=?";
+        $sql = "UPDATE events SET name=?, description=?, event_type_id=?, genre_id=?, franchise_id=?, event_from_datetime=?, event_to_datetime=?, event_status=?, price=? WHERE id=?";
 
         if($stmt = mysqli_prepare($conn, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -74,7 +74,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records updated successfully. Redirect to landing page
-                header("location: ./index.php");
+                header("location: ./contributor.php");
                 exit();
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
@@ -174,7 +174,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                         <div class="form-group">
                             <label>Select an Event Type</label>
                             <select name="Event_TypeId">
-                            <?php while ($event_type = mysqli_fetch_array($all_genres,MYSQLI_ASSOC)):; ?>
+                            <?php while ($event_type = mysqli_fetch_array($all_event_types,MYSQLI_ASSOC)):; ?>
                                 <?php if ($event_type["id"] == $event_type_id): ?>
                                     <option selected = "selected" value="<?php echo $event_type["id"]; ?>">
                                     <?php echo $event_type["name"]; ?>
@@ -235,7 +235,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 
                         <div class="form-group">
                             <label>Event Status</label>
-                            <input type="text" name="event_status" class="form-control <?php echo (!empty($event_status_err)) ? 'is-invalid' : ''; ?>" 	value="<?php echo $event_status; ?>">
+                            <input type="text" name="Event_status" class="form-control <?php echo (!empty($event_status_err)) ? 'is-invalid' : ''; ?>" 	value="<?php echo $event_status; ?>">
                             <span class="invalid-feedback"><?php echo $event_status_err;?></span>
                         </div>
 
@@ -247,7 +247,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 
                         <input type="hidden" name="id" value="<?php echo $id; ?>"/>
                         <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="./admin.php" class="btn btn-secondary ml-2">Cancel</a>
+                        <a href="./contributor.php" class="btn btn-secondary ml-2">Cancel</a>
                     </form>
                 </div>
             </div>        
