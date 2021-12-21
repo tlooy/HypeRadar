@@ -11,7 +11,10 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     $sql_genre 	        = "SELECT * FROM genres WHERE id = ?";
     $sql_franchise 	    = "SELECT * FROM franchises WHERE id = ?";
     $sql_event_type     = "SELECT * FROM event_types WHERE id = ?";
-    $sql_notifications 	= "SELECT * FROM notifications WHERE event_id = ? order by create_datetime desc";
+    $sql_notifications 	= "SELECT N.topic, N.id, S.name FROM notifications N, notification_statuses S " .
+                          " WHERE N.event_id = ? " .
+                          "   AND N.status_id = S.id " .
+                          " ORDER BY create_datetime desc";
     
     if($stmt_event = mysqli_prepare($conn, $sql_event)){
         // Bind variables to the prepared statement as parameters
@@ -166,7 +169,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                                         while($row = mysqli_fetch_array($result_notifications)){
                                             echo "<tr>";
                                                 echo "<td width=50%>" . $row['topic']  . "</td>";
-                                                echo "<td width=25%>" . $row['status'] . "</td>";
+                                                echo "<td width=25%>" . $row['name'] . "</td>";
                                                 echo "<td width=25%>";
                                                     echo '<a href="./updateEventNotification.php?id=' . $row['id'] .'" class="mr-3" title="Update Notification" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
                                                     echo '<a href="./deleteEventNotification.php?id=' . $row['id'] .'&table=events'.'" title="Delete Notification" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';

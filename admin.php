@@ -176,6 +176,49 @@
                     ?>
                 </div>
             </div>        
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="mt-5 mb-3 clearfix">
+                        <h2 class="pull-left">Notification Status List</h2>
+                        <a href="./createRecord.php?table=notification_statuses" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add New Notification Status</a>
+                    </div>
+                    <?php
+                    // Attempt select query execution
+                    $sql = "SELECT * FROM notification_statuses";
+                    if($result = mysqli_query($conn, $sql)){
+                        if(mysqli_num_rows($result) > 0){
+                            echo '<table class="table table-bordered table-striped">';
+                                echo "<thead>";
+                                    echo "<tr>";
+                                        echo "<th>Notification Status Name</th>";
+                                    echo "</tr>";
+                                echo "</thead>";
+                                echo "<tbody>";
+                                while($row = mysqli_fetch_array($result)){
+                                    echo "<tr>";
+                                        echo "<td>" . $row['name'] . "</td>";
+                                        echo "<td>";
+                                            echo '<a href="./readRecord.php?id='  . $row['id'] .'&table=notification_statuses'.'" class="mr-3" title="View Notification Status" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
+                                            echo '<a href="./updateRecord.php?id='. $row['id'] .'&table=notification_statuses'.'" class="mr-3" title="Update Notification Status" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
+                                            echo '<a href="./deleteRecord.php?id='. $row['id'] .'&table=notification_statuses'.'" title="Delete Notification Status" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
+                                        echo "</td>";
+                                    echo "</tr>";
+                                }
+                                echo "</tbody>";                            
+                            echo "</table>";
+                            // Free result set
+                            mysqli_free_result($result);
+                        } else{
+                            echo '<div class="alert alert-danger"><em>No records were found.</em></div>';
+                        }
+                    } else{
+                        echo "Oops! Something went wrong. Please try again later.";
+                    }
+ 
+                    ?>
+                </div>
+            </div>        
         </div>
     </div>
     <?php require_once("./footer.php"); ?>	

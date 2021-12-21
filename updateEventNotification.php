@@ -4,12 +4,12 @@ require_once "./config.php";
 require_once "./header.php";
  
 // Define variables and initialize with empty values
-$topic = $event_id = $source_id = $status =  "";
+$topic = $event_id = $source_id = $status_id =  "";
 $topic_err = $event_id_err = $source_err = $status_err = "";
  
 // Get drop list values for Event Notification Status values
-//    $sqlEvent_notification_statuses  = "SELECT * FROM event_notification_statuses";
-//    $all_event_notification_statuses = mysqli_query($conn,$sqlEvent_notification_statuses);
+    $sql_statuses = "SELECT * FROM notification_statuses";
+    $all_statuses = mysqli_query($conn,$sql_statuses);
     $sql_sources = "SELECT * FROM sources";
     $all_sources = mysqli_query($conn,$sql_sources);
 
@@ -31,21 +31,21 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 
     $event_id        = mysqli_real_escape_string($conn,$_POST['EventId']);
     $source_id       = mysqli_real_escape_string($conn,$_POST['SourceId']);
-    $status          = mysqli_real_escape_string($conn,$_POST['Status']);
+    $status_id       = mysqli_real_escape_string($conn,$_POST['StatusId']);
         
     // Check input errors before inserting in database
     if(empty($topic_err)){
         // Prepare an update statement
-        $sql = "UPDATE notifications SET topic=?, source_id=?, status=? WHERE id=?";
+        $sql = "UPDATE notifications SET topic=?, source_id=?, status_id=? WHERE id=?";
 
         if($stmt = mysqli_prepare($conn, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "sisi", $param_topic, $param_source_id, $param_status, $param_id);
+            mysqli_stmt_bind_param($stmt, "siii", $param_topic, $param_source_id, $param_status_id, $param_id);
             
             // Set parameters
             $param_topic 		         = $topic;
             $param_source_id             = $source_id;
-            $param_status                = $status;
+            $param_status_id             = $status_id;
             $param_id 	                 = $id;
             
             // Attempt to execute the prepared statement
@@ -95,7 +95,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     $topic      = $row["topic"];
                     $event_id   = $row["event_id"];
                     $source_id  = $row["source_id"];
-                    $status     = $row["status"];
+                    $status_id  = $row["status_id"];
 
                 } else{
                     // URL doesn't contain valid id. Redirect to error page
@@ -159,11 +159,22 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                         </div>
 
                         <div class="form-group">
-                            <label>Notification Status</label>
-                            <input type="text" name="Status" class="form-control <?php echo (!empty($status_err)) ? 'is-invalid' : ''; ?>" 	
-                                value="<?php echo $status; ?>">
-                            <span class="invalid-feedback"><?php echo $status_err;?></span>
+                            <label>Select a Status</label>
+                            <select name="StatusId">
+                            <?php while ($status = mysqli_fetch_array($all_statuses,MYSQLI_ASSOC)):; ?>
+                                <?php if ($status["id"] == $status_id): ?>
+                                    <option selected = "selected" value="<?php echo $status["id"]; ?>">
+                                    <?php echo $status["name"]; ?>
+                                <?php else: ?>
+                                    <option value="<?php echo $status["id"]; ?>">
+                                    <?php echo $status["name"]; ?>                       
+                                    </option>           
+                                <?php endif; ?>
+            
+                            <?php endwhile; ?>
+                            </select>
                         </div>
+
 
                         <input type="hidden" name="id" value="<?php echo $id; ?>"/>
                         <input type="hidden" name="EventId" value="<?php echo $event_id; ?>"/>

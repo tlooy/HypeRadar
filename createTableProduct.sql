@@ -25,6 +25,14 @@ CREATE TABLE event_types (
     description VARCHAR(255) NOT NULL
 );
 
+
+CREATE TABLE notification_statuses (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(255) NOT NULL
+);
+
+
 CREATE TABLE events (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -80,8 +88,8 @@ CREATE TABLE notifications (
     event_id INT NOT NULL,
     topic VARCHAR(200),
     source_id INT,
-    status VARCHAR(20),
-    create_datetime DATE,
+    status_id INT,
+    created_datetime DATE,
     sent_datetime DATE,
 
     FOREIGN KEY (event_id)
@@ -90,13 +98,20 @@ CREATE TABLE notifications (
 
     FOREIGN KEY (source_id)
       REFERENCES sources(id)
+      ON DELETE RESTRICT.
+
+    FOREIGN KEY (status_id)
+      REFERENCES notification_statuses(id)
       ON DELETE RESTRICT
 );
 
-DROP TABLE subscriptions;
-CREATE TABLE subscriptions...
-DROP TABLE comments;
-CREATE TABLE notifications...
-DROP TABLE products;
+
+SQL to be run in production to have database brought up to date:
+ALTER TABLE notifications DROP COLUMN status;
+ALTER TABLE notifications ADD COLUMN status_id INT;
+ALTER TABLE notifications ADD FOREIGN KEY (status_id)
+      REFERENCES notification_statuses(id)
+      ON DELETE RESTRICT;
+
 
 
