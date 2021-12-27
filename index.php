@@ -2,21 +2,20 @@
 	require_once "./header.php"; 
 	require_once "./config.php";
 
-	$sql_select = "SELECT P.name product_name, P.release_dt " . 
-		  " FROM 	products P "; 
+	$sql_select = "SELECT E.name event_name, E.event_from_datetime, E.event_to_datetime " . 
+		  " FROM 	events E "; 
 
 	$result = mysqli_query($conn, $sql_select);
 
     $result_array = Array();
 
     while($row = mysqli_fetch_array($result)){
-         $result_array[] = array('date' => $row['release_dt'], 'name' => $row['product_name']);
+         $result_array[] = array('from_date' => $row['event_from_datetime'], 'to_date' => $row['event_to_datetime'],'name' => $row['event_name']);
     }
     
     $json_array = json_encode($result_array);
-
-
 ?>	
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,12 +27,125 @@
 
     <title>Hype Radar!</title>
 </head>
-<body>
 
-	<p> Welcome to Hype Radar! So, what are you waiting for?</p>
+<body>
+    <div style="width:1000px; margin:0 auto;">
+        <h2> Welcome to Hype Radar! So, what are you waiting for?</h2>
+    </div>
+
+    <div class="wrapper">
+        <div class="container-fluid" id="Top Metrics" style="max-width: 1000px;">
+
+                <?php
+                    $sql =  "SELECT COUNT(S.id) count, name " .
+                            "  FROM events E, subscriptions S " .
+                            " WHERE E.id = S.event_id " .
+                            " GROUP BY S.id " . 
+                            " ORDER BY 1 DESC"; 
+
+                    if($result = mysqli_query($conn, $sql)){
+                        if(mysqli_num_rows($result) > 0){
+                            echo '<table style="max-width:250px" class="table table-bordered table-striped d-inline-block align-top">';
+                                echo "<thead>";
+                                    echo "<tr>";
+                                        echo "<th>Top Subscribed Events</th>";
+                                        echo "<th>Count</th>";
+                                    echo "</tr>";
+                                echo "</thead>";
+                                echo "<tbody>";
+                                while($row = mysqli_fetch_array($result)){
+                                    echo "<tr>";
+                                        echo "<td>" . $row['name']  . "</td>";
+                                        echo "<td>" . $row['count'] . "</td>";
+                                    echo "</tr>";
+                                }
+                                echo "</tbody>";                            
+                            echo "</table>";
+                            // Free result set
+                            mysqli_free_result($result);
+                        } else{
+                            echo '<div class="alert alert-danger"><em>No records were found.</em></div>';
+                        }
+                    } else{
+                        echo "Oops! Something went wrong. Please try again later.";
+                    }
+                ?>
+
+                <?php
+                    $sql =  "SELECT COUNT(E.id) count, name " .
+                            "  FROM events E, notifications N " .
+                            " WHERE E.id = N.event_id " .
+                            " GROUP BY E.id" . 
+                            " ORDER BY 1 DESC"; 
+
+                    if($result = mysqli_query($conn, $sql)){
+                        if(mysqli_num_rows($result) > 0){
+                            echo '<table style="max-width:250px" class="table table-bordered table-striped d-inline-block align-top">';
+                                echo "<thead>";
+                                    echo "<tr>";
+                                        echo "<th>Top Notified Events</th>";
+                                        echo "<th>Count</th>";
+                                    echo "</tr>";
+                                echo "</thead>";
+                                echo "<tbody>";
+                                while($row = mysqli_fetch_array($result)){
+                                    echo "<tr>";
+                                        echo "<td>" . $row['name']  . "</td>";
+                                        echo "<td>" . $row['count'] . "</td>";
+                                    echo "</tr>";
+                                }
+                                echo "</tbody>";                            
+                            echo "</table>";
+                            // Free result set
+                            mysqli_free_result($result);
+                        } else{
+                            echo '<div class="alert alert-danger"><em>No records were found.</em></div>';
+                        }
+                    } else{
+                        echo "Oops! Something went wrong. Please try again later.";
+                    }
+                ?>
+
+                <?php
+                    $sql =  "SELECT COUNT(U.id) count, username " .
+                            "  FROM users U, notifications N " .
+                            " WHERE U.id = N.creator_user_id " .
+                            " GROUP BY U.username " .
+                            " ORDER BY 1 DESC"; 
+
+                    if($result = mysqli_query($conn, $sql)){
+                        if(mysqli_num_rows($result) > 0){
+                            echo '<table style="max-width:250px" class="table table-bordered table-striped d-inline-block align-top">';
+                                echo "<thead>";
+                                    echo "<tr>";
+                                        echo "<th>Top Notification Creators</th>";
+                                        echo "<th>Count</th>";
+                                    echo "</tr>";
+                                echo "</thead>";
+                                echo "<tbody>";
+                                while($row = mysqli_fetch_array($result)){
+                                    echo "<tr>";
+                                        echo "<td>" . $row['count']     . "</td>";
+                                        echo "<td>" . $row['username']  . "</td>";
+                                    echo "</tr>";
+                                }
+                                echo "</tbody>";                            
+                            echo "</table>";
+                            // Free result set
+                            mysqli_free_result($result);
+                        } else{
+                            echo '<div class="alert alert-danger"><em>No records were found.</em></div>';
+                        }
+                    } else{
+                        echo "Oops! Something went wrong. Please try again later.";
+                    }
+                ?>
+ 
+         </div>
+    </div>
 
     <div class="contents">
-        <div id="myCalendar" style="max-width: 1000px;">
+        <div id="myCalendar" style="max-width: 1000px; margin:0 auto;">
             <p>The JavaScript Calendar goes here...</p>
 		</div>
     </div>
@@ -125,8 +237,8 @@
     while ( index < arrayProductObjects.length) {
 	        var event =  {};
 	// Changing the date format so the event shows on the correct day on the calendar
-    	event.from = arrayProductObjects[index].date.replace(/-/g, '\/');
-    	event.to   = arrayProductObjects[index].date.replace(/-/g, '\/');
+    	event.from = arrayProductObjects[index].from_date.replace(/-/g, '\/');
+    	event.to   = arrayProductObjects[index].to_date.replace(/-/g, '\/');
 	event.title = arrayProductObjects[index].name;
 	returnEventsArray.push(event);
     	index++;

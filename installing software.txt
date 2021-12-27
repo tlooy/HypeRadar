@@ -169,4 +169,19 @@ Installing git on MacOS
 	Username is tlooy24@gmail.com
 	From a terminal session cd /var/www/html/HypeRadar
 		sudo git pull
+		
+		
+********************************************************************
+* Getting dev environments set up to do React and NodeJS development
+********************************************************************
+Install curl: $sudo apt install curl 
+Get Node Package Manager: sudo apt install npm
+Install Node Version Manager: sudo apt install nvm
+	Use NVM to load most recent stable version of NPM - 16: 
+		sudo apt install curl 
+		$nvm install 16
+		$nvm use 16
+	
+
+Install curl: $sudo snap install curl
 	

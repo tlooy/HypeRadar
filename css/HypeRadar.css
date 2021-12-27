@@ -1,28 +1,33 @@
 
 .wrapper {
-	width: 600px;
+	width: 800px;
 	margin: 0 auto;
 }
+
 table tr td:last-child {
 	width: 120px;
 }
+
 .content {
 	overflow: auto;
 	border: 3px solid #666;
 }
+
 .content div {
 	padding: 10px;
 }
+
 .radar {
 	float: left;
 	width: 20%;
 }
+
 .title {
 	float: center;
 	width: 100%;
 }
 
-}
 .header {
 	position: fixed;
 }
+

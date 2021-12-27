@@ -89,6 +89,7 @@ CREATE TABLE notifications (
     topic VARCHAR(200),
     source_id INT,
     status_id INT,
+    creator_user_id INT,
     created_datetime DATE,
     sent_datetime DATE,
 
@@ -111,6 +112,12 @@ ALTER TABLE notifications DROP COLUMN status;
 ALTER TABLE notifications ADD COLUMN status_id INT;
 ALTER TABLE notifications ADD FOREIGN KEY (status_id)
       REFERENCES notification_statuses(id)
+      ON DELETE RESTRICT;
+      
+      
+ALTER TABLE notifications ADD creator_user_id INT;
+ALTER TABLE notifications ADD FOREIGN KEY (creator_user_id)
+      REFERENCES users(id)
       ON DELETE RESTRICT;
 
 

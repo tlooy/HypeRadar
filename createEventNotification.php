@@ -22,6 +22,8 @@
 
 	$sql_Sources 	= "SELECT * FROM sources";
 	$all_Sources 	= mysqli_query($conn,$sql_Sources);
+	$sql_Statuses 	= "SELECT * FROM notification_statuses";
+	$all_Statuses 	= mysqli_query($conn,$sql_Statuses);
 
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 	
@@ -30,7 +32,7 @@
 
 		if(empty($input_topic)){
     		$topic_err = "Please enter a topic.";
-		} elseif(!filter_var($input_topic, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z\s]+$/")))){
+		} elseif(!filter_var($input_topic, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z0-9\s]+$/")))){
     		$name_err = "Please enter a valid topic.";
 		} else{
     		$topic = $input_topic;
@@ -39,27 +41,29 @@
 
 		$eventId 		= mysqli_real_escape_string($conn,$_POST['EventId']);
 		$sourceId 		= mysqli_real_escape_string($conn,$_POST['SourceId']);
-		$status			= mysqli_real_escape_string($conn,$_POST['Status']);
+		$statusId		= mysqli_real_escape_string($conn,$_POST['StatusId']);
 		$systemDt 		= date("Y-m-d H:i:s");
 		
 		if(empty($notication_err) ){
 			$sql_insert =
-			"INSERT INTO notifications (topic, event_id, source_id, status, create_datetime) VALUES (?, ?, ?, ?, ?)";
+			"INSERT INTO notifications (topic, event_id, source_id, status_id, create_datetime, creator_user_id) VALUES (?, ?, ?, ?, ?, ?)";
          
 	        	if($stmt = mysqli_prepare($conn, $sql_insert)){
-	        	    mysqli_stmt_bind_param($stmt, "siiss", $param_topic, $param_eventId, $param_sourceId, $param_status, $param_create_datetime);
+	        	    mysqli_stmt_bind_param($stmt, "siissi", $param_topic, $param_eventId, $param_sourceId, $param_statusId, 
+	        	    	$param_create_datetime, $param_creator_user_id);
 	        	    $param_topic			= $topic;
         		    $param_eventId 			= $eventId;
        		    	$param_sourceId 		= $sourceId;
-       		    	$param_status		 	= $status;
+       		    	$param_statusId		 	= $statusId;
        		    	$param_create_datetime 	= $systemDt;
+       		    	$param_creator_user_id 	= $_SESSION['id'];
 
 	        	    if(mysqli_stmt_execute($stmt)){
 	        	        header("location: ./contributor.php");
 	        	        exit();
 	        	    } else{
 	        	        echo "Oops! Something went wrong. Please try again later.";
-echo mysqli_stmt_error($stmt);
+						echo mysqli_stmt_error($stmt);
 	        	    }
         		} else {
 	        	        echo "Something went wrong with the mysqli_prepare.";
@@ -111,9 +115,14 @@ echo mysqli_stmt_error($stmt);
                         </div>
 
                         <div class="form-group">
-                            <label>Status</label>
-                            <input type="text" name="Status" class="form-control <?php echo (!empty($status_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $status; ?>">
-                            <span class="invalid-feedback"><?php echo $status_err;?></span>
+                            <label>Select a Notification Status</label>
+							<select name="StatusId">
+								<?php while ($source = mysqli_fetch_array($all_Statuses,MYSQLI_ASSOC)):; ?>			
+			                		<option value="<?php echo $source["id"]; ?>">
+			                		<?php echo $source["name"]; ?>
+			                		</option>			
+								<?php endwhile; ?>
+							</select>
                         </div>
                         
                         <input type="hidden" name="EventId" value="<?php echo $id; ?>"/>
