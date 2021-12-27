@@ -59,13 +59,14 @@
 		if(empty($name_err) && empty($description_err) ){
 		
 			$sql_insert =
-			"INSERT INTO events (name, description, event_type_id, genre_id, franchise_id, event_from_datetime, event_to_datetime, event_status, price) " . 
-			" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			"INSERT INTO events (name, description, event_type_id, genre_id, franchise_id, event_from_datetime, event_to_datetime, event_status, price, creator_user_id) " . 
+			" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
          
 	        	if($stmt = mysqli_prepare($conn, $sql_insert)){
-					mysqli_stmt_bind_param($stmt, "ssiiisssd", 
+					mysqli_stmt_bind_param($stmt, "ssiiisssdi", 
 						$param_name, $param_description, $param_eventTypeId, $param_genreId, $param_franchiseId, 
-	        	    	$param_eventFromDatetime, $param_eventToDatetime, $param_eventStatus, $param_price);
+	        	    	$param_eventFromDatetime, $param_eventToDatetime, $param_eventStatus, $param_price,
+        	    		$param_creator_user_id);
 	        	    $param_name 				= $name;
         		    $param_description 			= $description;
 	       		    $param_eventTypeId 			= $eventTypeId;
@@ -75,6 +76,7 @@
 	       		    $param_eventToDatetime 		= $eventToDatetime;
 	       		    $param_eventStatus 			= $releaseDtStatus;
 	       		    $param_price	 			= $price;
+       		    	$param_creator_user_id 		= $_SESSION['id'];
 
 	        	    if(mysqli_stmt_execute($stmt)){
 	        	        header("location: ./index.php");

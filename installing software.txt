@@ -58,7 +58,7 @@ AWS Lightsail Install
 	Create OS Only instance for Ubuntu 20.04
 	Lightsail instance name = Ubuntu-1-HypeRadar
 		512 MB RAM, 1 CPU, 20 GB SSD
-		Public Static IP: name = StaticIp-1, address = 44.237.169.161
+		Public Static IP: name = StaticIp-2, address = 44.237.169.161
 	Install LAMP Stack: from a terminal session lauched from the AWS Lightsail Admin Home Page
 		https://aws.amazon.com/premiumsupport/knowledge-center/lightsail-instance-install-lamp-stack/
 		sudo apt update
@@ -174,14 +174,28 @@ Installing git on MacOS
 ********************************************************************
 * Getting dev environments set up to do React and NodeJS development
 ********************************************************************
+Install nodejs: sudo apt-get install -y nodejs
 Install curl: $sudo apt install curl 
+Install curl: $sudo snap install curl
 Get Node Package Manager: sudo apt install npm
 Install Node Version Manager: sudo apt install nvm
 	Use NVM to load most recent stable version of NPM - 16: 
 		sudo apt install curl 
 		$nvm install 16
 		$nvm use 16
-	
+Create backend 
+and frontend projects for node:
+		$cd /var/www/html/HypeRadar/backend
+		$npm init
+		$cd /var/www/html/HypeRadar/frontend/
+		$npm init
+		$npx create-react-native-app
 
 Install curl: $sudo snap install curl
+
+To start/stop nodeJS use npm commands:
+	cd /var/www/html/HypeRadar/backend
+	npm start
+	npm run web
+	
 	

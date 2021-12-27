@@ -45,7 +45,7 @@
 
                     if($result = mysqli_query($conn, $sql)){
                         if(mysqli_num_rows($result) > 0){
-                            echo '<table style="max-width:250px" class="table table-bordered table-striped d-inline-block align-top">';
+                            echo '<table style="max-width:350px" class="table table-bordered table-striped d-inline-block align-top">';
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>Top Subscribed Events</th>";
@@ -80,7 +80,7 @@
 
                     if($result = mysqli_query($conn, $sql)){
                         if(mysqli_num_rows($result) > 0){
-                            echo '<table style="max-width:250px" class="table table-bordered table-striped d-inline-block align-top">';
+                            echo '<table style="max-width:350px" class="table table-bordered table-striped d-inline-block align-top">';
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>Top Notified Events</th>";
@@ -115,7 +115,7 @@
 
                     if($result = mysqli_query($conn, $sql)){
                         if(mysqli_num_rows($result) > 0){
-                            echo '<table style="max-width:250px" class="table table-bordered table-striped d-inline-block align-top">';
+                            echo '<table style="max-width:350px" class="table table-bordered table-striped d-inline-block align-top">';
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>Top Notification Creators</th>";
@@ -125,8 +125,43 @@
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['count']     . "</td>";
                                         echo "<td>" . $row['username']  . "</td>";
+                                        echo "<td>" . $row['count']     . "</td>";
+                                    echo "</tr>";
+                                }
+                                echo "</tbody>";                            
+                            echo "</table>";
+                            // Free result set
+                            mysqli_free_result($result);
+                        } else{
+                            echo '<div class="alert alert-danger"><em>No records were found.</em></div>';
+                        }
+                    } else{
+                        echo "Oops! Something went wrong. Please try again later.";
+                    }
+                ?>
+
+                <?php
+                    $sql =  "SELECT COUNT(U.id) count, username " .
+                            "  FROM users U, events E " .
+                            " WHERE U.id = E.creator_user_id " .
+                            " GROUP BY U.username " .
+                            " ORDER BY 1 DESC"; 
+
+                    if($result = mysqli_query($conn, $sql)){
+                        if(mysqli_num_rows($result) > 0){
+                            echo '<table style="max-width:350px" class="table table-bordered table-striped d-inline-block align-top">';
+                                echo "<thead>";
+                                    echo "<tr>";
+                                        echo "<th>Top Event Creators</th>";
+                                        echo "<th>Count</th>";
+                                    echo "</tr>";
+                                echo "</thead>";
+                                echo "<tbody>";
+                                while($row = mysqli_fetch_array($result)){
+                                    echo "<tr>";
+                                        echo "<td>" . $row['username']  . "</td>";
+                                        echo "<td>" . $row['count']     . "</td>";
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";                            

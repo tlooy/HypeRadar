@@ -44,6 +44,7 @@ CREATE TABLE events (
     event_to_datetime DATE NOT NULL,
     event_status VARCHAR(20), 
     price DECIMAL (10, 2),
+    creator_user_id INT,
     
     FOREIGN KEY (genre_id)
       REFERENCES genres(id)
@@ -99,26 +100,34 @@ CREATE TABLE notifications (
 
     FOREIGN KEY (source_id)
       REFERENCES sources(id)
-      ON DELETE RESTRICT.
+      ON DELETE RESTRICT,
 
     FOREIGN KEY (status_id)
       REFERENCES notification_statuses(id)
+      ON DELETE RESTRICT,
+
+    FOREIGN KEY (creator_user_id)
+      REFERENCES users(id)
       ON DELETE RESTRICT
 );
 
 
 SQL to be run in production to have database brought up to date:
-ALTER TABLE notifications DROP COLUMN status;
-ALTER TABLE notifications ADD COLUMN status_id INT;
-ALTER TABLE notifications ADD FOREIGN KEY (status_id)
+[Done] ALTER TABLE notifications DROP COLUMN status;
+[Done] ALTER TABLE notifications ADD COLUMN status_id INT;
+[Done] ALTER TABLE notifications ADD FOREIGN KEY (status_id)
       REFERENCES notification_statuses(id)
       ON DELETE RESTRICT;
       
-      
-ALTER TABLE notifications ADD creator_user_id INT;
-ALTER TABLE notifications ADD FOREIGN KEY (creator_user_id)
+[Dec 26, 2021]      
+[Done] ALTER TABLE notifications ADD COLUMN creator_user_id INT;
+[Done]  ALTER TABLE notifications ADD FOREIGN KEY (creator_user_id)
       REFERENCES users(id)
       ON DELETE RESTRICT;
+[Done] ALTER TABLE notifications ADD COLUMN status_id INT;
+[Done] ALTER TABLE notifications DROP status;
 
 
+[Dec 27, 2021]      
+ALTER TABLE events ADD COLUMN creator_user_id INT;
 
