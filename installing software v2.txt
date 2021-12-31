@@ -1,0 +1,228 @@
+Ubuntu install
+	username: tlooy
+	password: TLUbuntu24!
+
+After install of Ubuntu 20 get wifi adapter working:
+	sudo apt install dkms
+	sudo apt install git
+	sudo apt update
+	sudo apt install --reinstall git dkms build-essential
+	git clone https://github.com/aircrack-ng/rtl8812au.git
+	sudo make dkms_install
+	reboot
+
+installing LAMP stack: Apache2
+	sudo apt install apache2
+	sudo ufw allow 'Apache' (allow acess to port 80 only)
+	verify that it is installed and running: http://10.0.0.40 
+		(use hostname -I to get ip address)
+	To stop your web server, type:
+		sudo systemctl stop apache2
+	To start the web server when it is stopped, type:
+		sudo systemctl start apache2
+	To check on status of Apache
+		sudo systemctl status apache2
+
+installing LAMP stack: PHP
+	sudo apt install php libapache2-mod-php (from Ubuntu website: https://ubuntu.com/server/docs/programming-php)
+	sudo apt install php-cli
+	sudo apt install php-cgi
+	sudo apt install php-mysql
+
+Installing LAMP stack: mysql
+	sudo apt install mysql-server
+	sudo mysql
+		create database testing;
+		use testing;
+		create user 'tlooy'@'localhost' identified by 'TLUbuntu24!';
+		grant all privileges on *.* to 'tlooy'@'localhost' with grant option;
+	
+Editing webpage content
+	gedit /var/www/html (default apache2 webpage. TODO: edit /etc/apache2.apache2.conf)
+
+Installing Git (version 2.34.0 is the latest version at the time of my install)
+	sudo apt-get install git-all
+	
+Adding a new SSH Key in order to do a Git push	
+	https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+	
+Exporting and Importing the mysql database
+	https://www.digitalocean.com/community/tutorials/how-to-import-and-export-databases-in-mysql-or-mariadb
+	
+	
+***********************	
+AWS Lightsail Install
+***********************
+	Create an AWS Account: email address + TLA**##!
+	AWS account name = ThomasLooy
+	Create OS Only instance for Ubuntu 20.04
+	Lightsail instance name = Ubuntu-1-HypeRadar
+		512 MB RAM, 1 CPU, 20 GB SSD
+		Public Static IP: name = StaticIp-2, address = 44.237.169.161
+	Install LAMP Stack: from a terminal session lauched from the AWS Lightsail Admin Home Page
+		https://aws.amazon.com/premiumsupport/knowledge-center/lightsail-instance-install-lamp-stack/
+		sudo apt update
+		sudo apt install apache2
+		
+		sudo apt-get install software-properties-common
+		sudo add-apt-repository ppa:ondrej/php
+		sudo add-apt-repository ppa:ondrej/php (Note: this was suggested in the install documentation for php)
+		sudo apt update -y		
+		//sudo apt install php8.0 php8.0-{fpm,mysql,curl,gd,mbstring,mysql,xml,mcrypt,zip,ldap} libapache2-mod-php8.0 -y
+		sudo apt install php7.4-mysql (Note: use phpinfo() to determine which version of PHP is running. We are using php7.4, not php8.0)
+		sudo apt install mysql-server
+	Installing creating a local git repo
+		sudo git clone https://github.com/tlooy/HypeRadar
+		http://44.237.169.161/HypeRadar/index.php
+		
+	Setting up the mysql database
+		Create Amazon Lightsail Database instance for mySQL 8.0.26 (I tried to create a mysql instance in our Lightsail instance but I don't think there is enough memory there to run it)
+		Connect to newly created database: https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-connecting-to-your-mysql-database
+			Endpoint: ls-c48031d8325b51d2cd3809f851b1d421917e17a0.c9ytyx5wmt8t.us-west-2.rds.amazonaws.com
+			Port: 3306
+			User name: dbmasteruser
+			Password: [!lIc,qeL2MG]BnWE=;3#U0;,pu{(If}
+			
+		To connect from a Lightsail instance to the Lightsail Database using the commandline: 
+			mysql --host ls-c48031d8325b51d2cd3809f851b1d421917e17a0.c9ytyx5wmt8t.us-west-2.rds.amazonaws.com --user dbmasteruser --password
+
+		Connect to the database to import from the commandline in the Lightsail Instance and then do the following from the MySQL prompt: 
+			MySQL [(none)]> create database testing;
+			MySQL [(none)]> use testing;
+			MySQL [testing]> exit;
+			From the Ubuntu command line at /var/www/html/HypeRadar enter the following:
+				// cat data-dump.sql | mysql --host ls-c48031d8325b51d2cd3809f851b1d421917e17a0.c9ytyx5wmt8t.us-west-2.rds.amazonaws.com --user dbmasteruser --password
+			To create the tables in the database, run createTableProduct.sql
+
+			create database testing;
+			use testing;
+			create user 'tlooy'@'localhost' identified by 'TLUbuntu24!';
+			grant all privileges on *.* to 'tlooy'@'%' with grant option;
+		
+
+
+*****************************************		
+Updating Anrew's Laptop for new git repo
+*****************************************
+Deleted the exiting git repo
+	cd /var/www/html 
+	rm-fr .git
+	rm-fr src
+	rm-fr css
+	rm-fr *.*
+ 
+Cloned the git repo from github
+	cd /var/www/html
+ 	git clone https://github.com/tlooy/HypeRadar
+
+Created Personal Access Token in order to allow 'git push' from this machine to github
+	https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
+	 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
+	 (Note: use this token as your github password when you do a git push)
+
+Created a config.php file with your local database connection details (Note:config.php is included in the .ignore file so it won't be pushed to github)
+	<?php
+
+    		$dbhost = 'localhost';
+    		$dbuser = 'tlooy';
+    		$dbpass = 'TLUbuntu24!';
+    		$dbname = 'testing';
+
+		$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+		
+		if (mysqli_connect_errno()) {
+			print('Connect failed');
+			echo('Connect failed');
+		}
+
+		if (!$conn) {
+			die('Could not connect: ' . mysql_error());
+		}
+	?>
+
+***********************************************************
+* Getting HypeRadar development onto a Mac (Intel based)
+***********************************************************
+Installing Apache and PHP on MacOS
+	Install Homebrew for package management
+		Install the homebrew version of Apache
+		Install the homebrew version of PHP@7.4
+	edit usr/local/etc/httpd/httpd.conf to get Apache to run PHP files
+		default directory: /usr/local/var/www
+		https://medium.com/@crmcmullen/how-to-install-apache-on-macos-10-13-high-sierra-and-10-14-mojave-using-homebrew-3cb6bf6e3cd4
+		https://wpbeaches.com/install-apache-mysql-php-on-macos-11-big-sur-and-earlier-macos/
+			Also uncomment the line that disables php
+			LoadModule for php7.4
+			Include index.php in Directories
+		Include the process handler 
+	to start apache: $sudo apachectl start (this is the same as doing a brew services start httpd)
+	
+Installing git on MacOS
+	$brew install git
+	$brew install git-gui
+	
+	
+*************************************	
+* Running Hype Radar on Lightsail
+*************************************
+	Log into signin.aws.amazon.com
+	Username is tlooy24@gmail.com
+	From a terminal session cd /var/www/html/HypeRadar
+		sudo git pull
+		
+		
+********************************************************************
+* Getting dev environments set up to do React and NodeJS development
+********************************************************************
+Install nodejs: sudo apt-get install -y nodejs
+Install curl: $sudo apt install curl 
+Install curl: $sudo snap install curl
+Get Node Package Manager: sudo apt install npm
+Install Node Version Manager: sudo apt install nvm
+	Use NVM to load most recent stable version of NPM - 16: 
+		sudo apt install curl 
+		$nvm install 16
+		$nvm use 16
+Create backend 
+and frontend projects for node:
+		$cd /var/www/html/HypeRadar/backend
+		$npm init
+		$cd /var/www/html/HypeRadar/frontend/
+		$npm init
+		$npx create-react-native-app
+
+Install curl: $sudo snap install curl
+
+To start/stop nodeJS use npm commands:
+	cd /var/www/html/HypeRadar/backend
+	npm start
+	npm run web
+	
+Setting up Expo (https://reactnative.dev/docs/environment-setup)
+	npm install --global expo-cli
+	cd /var/www/html
+	expo init MyFirstReactProject
+	npm start (this does an expo start and starts a node session at localhost:19002)
+	
+Starting a new expo project:
+	(NOTE: this did not work as the .git repo created by expo won't clone into github)
+		$cd /var/www/html
+		$expo init HypeRadar-expo (choose blank as the template type)
+		$cd HypeRadar-expo
+	To create an expo project in our mono repository:
+		$cd /var/www/html/HypeRadar
+		$expo init mobile-expo (choose blank as the template type)
+		$cd mobile-expo
+		$rm -r .git 
+			We must delete the version of .git that expo created - we can't have a git repo nested in a git repo
+			We also can't use $git rm because git we haven't done a git add on this new .git directory
+	npm install @react-navigation/native	
+	expo install react-native-screens react-native-safe-area-context
+	npm install react-navigation-stack
+	npm install --save react-native-vector-icons
+	$expo start
+	From your mobile device: 
+		run Expo Go
+		Enter the QR code from the terminal window that started the expo server
+	(Note: using https://github.com/AshfaaqAhamed17/SignUp-Login as an example)
+	
