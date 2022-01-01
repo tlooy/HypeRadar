@@ -14,7 +14,7 @@ export default class signin extends Component {
     };
   }
 
-  InsertRecord=()=>{
+  CheckSigninCredentials=()=>{
     var Email = this.state.email;
     var Password = this.state.password;
     if ((Email.length==0) || (Password.length==0)){
@@ -113,7 +113,7 @@ export default class signin extends Component {
                   <Pressable
                     style={styles.loginButton} 
                     onPress={()=>{
-                      this.InsertRecord()
+                      this.CheckSigninCredentials()
                     }}
                     >
                       <Text style={styles.text}>Sign In</Text>

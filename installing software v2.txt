@@ -215,7 +215,7 @@ Starting a new expo project:
 		$cd mobile-expo
 		$rm -r .git 
 			We must delete the version of .git that expo created - we can't have a git repo nested in a git repo
-			We also can't use $git rm because git we haven't done a git add on this new .git directory
+			We also can't use $git rm because we haven't done a git add on this new .git directory
 	npm install @react-navigation/native	
 	expo install react-native-screens react-native-safe-area-context
 	npm install react-navigation-stack
@@ -225,4 +225,10 @@ Starting a new expo project:
 		run Expo Go
 		Enter the QR code from the terminal window that started the expo server
 	(Note: using https://github.com/AshfaaqAhamed17/SignUp-Login as an example)
+	
+	Getting Notifications to work:
+		expo install expo-notifications
+		expo login (Expo Notification Service requires a dev account logged in) 
+		expo start
+		
 	
