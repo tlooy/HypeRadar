@@ -21,8 +21,10 @@ export default function App() {
 	const responseListener = useRef();
 
 	useEffect(() => {
-		registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-
+		registerForPushNotificationsAsync()
+		.then(token => setExpoPushToken(token))
+		.then(saveDeviceTokenToDatabase(expoPushToken));
+		
 		// This listener is fired whenever a notification is received while the app is foregrounded
 		notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
 			setNotification(notification);
@@ -117,45 +119,43 @@ async function registerForPushNotificationsAsync() {
 
 
 
+
+async function saveDeviceTokenToDatabase(expoPushToken) {
+//	try {
+		// TODO change this to localhost or something else from config...
+		var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/saveDID.php";
+
+		var headers = {
+			'Accept' : 'application/json',
+			'Content-Type' : 'application/json'
+		};
+// TODO get user ID from the login page    
+		var Data = {
+			'Token': 'ExponentPushToken[xRVMIeId6t0BQS_eY94El7]',
+			'UserId': '18'
+		};
+
+		fetch(APIURL,{
+			method: 'POST',
+			headers: headers,
+			body: JSON.stringify(Data)
+		})
+		.then((Response)=>Response.json())
+		.then((Response)=>{
+			alert(Response[0].Message)
+			if (Response[0].Message == "Success") {
+				  console.log("DID successfully saved to User Account");
+			}
+			console.log(Data);
+		})
+		.catch((error)=>{
+			console.error("ERROR FOUND" + error);
+		})
 /*
-async function saveDeviceTokenToDatabase() {
-
-		try {
-			// TODO change this to localhost or something else from config...
-			var APIURL = "http://10.0.0.40/HypeRadar-expo/backend/saveDID.php";
-
-			var headers = {
-				'Accept' : 'application/json',
-				'Content-Type' : 'application/json'
-			};
-			    
-			var Data ={
-				'Token': token
-			};
-
-			fetch(APIURL,{
-				method: 'POST',
-				headers: headers,
-				body: JSON.stringify(Data)
-			})
-			.then((Response)=>Response.json())
-			.then((Response)=>{
-				alert(Response[0].Message)
-				if (Response[0].Message == "Success") {
-					  console.log("DID successfully saved to User Account");
-	//				  this.props.navigation.navigate("HomeScreen", { UserID: Response[1].UserID });
-				}
-				console.log(Data);
-			})
-			.catch((error)=>{
-				console.error("ERROR FOUND" + error);
-			})
-		} catch (error) {
-			console.log(error);
-		}
+	} catch (error) {
+		console.log(error);
 	}
-}
 */
-
+}
 
 

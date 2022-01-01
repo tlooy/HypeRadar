@@ -111,6 +111,17 @@ CREATE TABLE notifications (
       ON DELETE RESTRICT
 );
 
+CREATE TABLE notification_devices (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    notification_token VARCHAR(100) NOT NULL,
+    device_type VARCHAR(100),
+
+    FOREIGN KEY (user_id)
+      REFERENCES users(id)
+      ON DELETE RESTRICT
+);
+
 
 SQL to be run in production to have database brought up to date:
 [Done] ALTER TABLE notifications DROP COLUMN status;
@@ -130,4 +141,17 @@ SQL to be run in production to have database brought up to date:
 
 [Dec 27, 2021]      
 ALTER TABLE events ADD COLUMN creator_user_id INT;
+
+[Dec 31, 2021]
+CREATE TABLE notification_devices (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    notification_token VARCHAR(100) NOT NULL,
+    device_type VARCHAR(100),
+
+    FOREIGN KEY (user_id)
+      REFERENCES users(id)
+      ON DELETE RESTRICT
+);
+
 
