@@ -4,65 +4,63 @@ import styles from './style';
 import Feather from 'react-native-vector-icons/Feather';
 
 export default class signin extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email : '',
-      password : '',
-      check_textInputChange : false,
-      secureTextEntry : true,
-    };
-  }
+	constructor(props) {
+		super(props);
+		this.state = {
+			email : '',
+			password : '',
+			check_textInputChange : false,
+			secureTextEntry : true,
+		};
+	}
 
-  CheckSigninCredentials=()=>{
-    var Email = this.state.email;
-    var Password = this.state.password;
-    if ((Email.length==0) || (Password.length==0)){
-      alert("Required Field Is Missing!!!");
-    }else{
-      // TODO change this to localhost or something else that will work when we promote this to prod
-      var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/signin.php";
+	CheckSigninCredentials=()=>{
+		var Email = this.state.email;
+		var Password = this.state.password;
+		if ((Email.length==0) || (Password.length==0)){
+			alert("Required Field Is Missing!!!");
+		}else{
+			// TODO change this to localhost or something else that will work when we promote this to prod
+			var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/signin.php";
 
-      var headers = {
-        'Accept' : 'application/json',
-        'Content-Type' : 'application/json'
-      };
+			var headers = {
+				'Accept' : 'application/json',
+				'Content-Type' : 'application/json'
+			};
             
-      var Data ={
-        'Email': Email,
-        'Password': Password
-      };
+			var Data ={
+				'Email': Email,
+				'Password': Password
+			};
 
-      fetch(APIURL,{
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(Data)
-      })
-      .then((Response)=>Response.json())
-      .then((Response)=>{
-        alert(Response[0].Message+"! Your User ID = "+Response[1].UserID)
-        if (Response[0].Message == "Success") {
-          console.log("true")
-          console.log( "UserID = ", Response[1].UserID);
-//          UserID = Response[1].UserID;
-          this.props.navigation.navigate("HomeScreen", { UserID: Response[1].UserID });
-        }
-        console.log(Data);
-      })
-      .catch((error)=>{
-        console.error("ERROR FOUND" + error);
-      })
-    }
-    
-    
-  }
+			fetch(APIURL,{
+				method: 'POST',
+				headers: headers,
+				body: JSON.stringify(Data)
+			})
+			.then((Response)=>Response.json())
+			.then((Response)=>{
+				if (Response[0].Message == "Success") {
+					alert(Response[0].Message+"! Your User ID = "+Response[1].UserID);
+					console.log(Data);
+					console.log( "UserID = ", Response[1].UserID);
+					this.props.navigation.navigate("HomeScreen", { UserID: Response[1].UserID });
+				} else {
+					alert("Invalid Username/eMail or Password")
+				}
+			})
+ 			.catch((error)=>{
+				console.error("ERROR FOUND" + error);
+			})
+		}
+	}
 
-  updateSecureTextEntry(){
-    this.setState({
-      ...this.state,
-      secureTextEntry: !this.state.secureTextEntry
-    });
-  }
+	updateSecureTextEntry(){
+		this.setState({
+			...this.state,
+			secureTextEntry: !this.state.secureTextEntry
+		});
+	}
 
   render() {
     return (
