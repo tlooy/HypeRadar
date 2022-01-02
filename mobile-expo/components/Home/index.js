@@ -9,17 +9,21 @@ import styles from './style';
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
 		shouldShowAlert: true,
-		shouldPlaySound: false,
+		shouldPlaySound: true,
 		shouldSetBadge: false,
 	}),
 });
 
-export default function App() {
+// Make userID global so it can be available when we persist the notification device in a method called in a promise that already sends the token
+let userID;
+
+export default function App({ navigation }) {
 	const [expoPushToken, setExpoPushToken] = useState('');
 	const [notification, setNotification] = useState(false);
 	const notificationListener = useRef();
 	const responseListener = useRef();
 
+	userID = navigation.getParam('UserID');
 	useEffect(() => {
 		registerForPushNotificationsAsync()
 		.then(token => setExpoPushToken(token))
@@ -49,7 +53,9 @@ export default function App() {
 				alignItems: 'center',
 				justifyContent: 'space-around',
 			}}>
-			<Text>Your expo push token: {expoPushToken}</Text>
+			<Text>User ID: { userID }</Text>
+
+			<Text>Expo push token: {expoPushToken}</Text>
 			<View style={{ alignItems: 'center', justifyContent: 'center' }}>
 				<Text>Title: {notification && notification.request.content.title} </Text>
 				<Text>Body: {notification && notification.request.content.body}</Text>
@@ -95,12 +101,11 @@ async function registerForPushNotificationsAsync() {
 			const { status } = await Notifications.requestPermissionsAsync();
 			finalStatus = status;
 		}
-	if (finalStatus !== 'granted') {
-		alert('Failed to get push token for push notification!');
-		return;
-	}
-	token = (await Notifications.getExpoPushTokenAsync()).data;
-	console.log(token);
+		if (finalStatus !== 'granted') {
+			alert('Failed to get push token for push notification!');
+			return;
+		}
+		token = (await Notifications.getExpoPushTokenAsync()).data;
 	} else {
 		alert('Must use physical device for Push Notifications');
 	}
@@ -117,9 +122,6 @@ async function registerForPushNotificationsAsync() {
   return token;
 }
 
-
-
-
 async function saveDeviceTokenToDatabase(expoPushToken) {
 //	try {
 		// TODO change this to localhost or something else from config...
@@ -129,10 +131,10 @@ async function saveDeviceTokenToDatabase(expoPushToken) {
 			'Accept' : 'application/json',
 			'Content-Type' : 'application/json'
 		};
-// TODO get user ID from the login page    
+
 		var Data = {
-			'Token': 'ExponentPushToken[xRVMIeId6t0BQS_eY94El7]',
-			'UserId': '18'
+			Token: expoPushToken,
+			UserID: userID
 		};
 
 		fetch(APIURL,{
@@ -146,7 +148,7 @@ async function saveDeviceTokenToDatabase(expoPushToken) {
 			if (Response[0].Message == "Success") {
 				  console.log("DID successfully saved to User Account");
 			}
-			console.log(Data);
+			console.log("Data Object after the fetch = ", Data);
 		})
 		.catch((error)=>{
 			console.error("ERROR FOUND" + error);

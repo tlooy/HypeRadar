@@ -2,11 +2,7 @@
 include('db.php');
 
 $deviceToken	= $decodedData['Token'];
-$userId	= $decodedData['UserId'];
-//$deviceToken 	= 'ExponentPushToken[xRVMIeId6t0BQS_eY94El7]';
-//$userId 	= 18;
-
-
+$userId	= $decodedData['UserID'];
 
 $sql  = "INSERT INTO notification_devices (user_id, notification_token) VALUES (?, ?);";
 $stmt = mysqli_stmt_init($conn);
