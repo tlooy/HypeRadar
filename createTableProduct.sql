@@ -154,4 +154,12 @@ CREATE TABLE notification_devices (
       ON DELETE RESTRICT
 );
 
+[Jan 2, 2022]
+CREATE TABLE subscription_notifications (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    subscription_id INT NOT NULL,
+    notification_id INT NOT NULL,
+    status VARCHAR(100),
+    created_datetime DATE
+);
 

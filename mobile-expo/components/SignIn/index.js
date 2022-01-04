@@ -44,7 +44,7 @@ export default class signin extends Component {
 					alert(Response[0].Message+"! Your User ID = "+Response[1].UserID);
 					console.log(Data);
 					console.log( "UserID = ", Response[1].UserID);
-					this.props.navigation.navigate("HomeScreen", { UserID: Response[1].UserID });
+					this.props.navigation.navigate("NotificationScreen", { UserID: Response[1].UserID });
 				} else {
 					alert("Invalid Username/eMail or Password")
 				}
