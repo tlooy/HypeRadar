@@ -26,8 +26,8 @@ export default function App({ navigation }) {
 	userID = navigation.getParam('UserID');
 	useEffect(() => {
 		registerForPushNotificationsAsync()
-		.then(token => setExpoPushToken(token))
-		.then(saveDeviceTokenToDatabase(expoPushToken));
+		.then(token => checkForExpoPushTokenInDatabase(token))
+		.then(token => setExpoPushToken(token));
 		
 		// This listener is fired whenever a notification is received while the app is foregrounded
 		notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
@@ -56,40 +56,16 @@ export default function App({ navigation }) {
 			<Text>User ID: { userID }</Text>
 
 			<Text>Expo push token: {expoPushToken}</Text>
-			<View style={{ alignItems: 'center', justifyContent: 'center' }}>
-				<Text>Title: {notification && notification.request.content.title} </Text>
-				<Text>Body: {notification && notification.request.content.body}</Text>
-				<Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
-			</View>
 			<Button
-				title="Press to Send Notification"
-				onPress={async () => {
-					await sendPushNotification(expoPushToken);
+				title="Press to Register for Push Notifications (not functioning yet...)"
+//				onPress={async () => {
+//					await sendPushNotification(expoPushToken);
+				onPress= {() =>  {
+					this.props.navigation.navigate("HomeScreen", { UserID: Response[1].UserID });
 				}}
 	      		/>
 		</View>
 	);
-}
-
-// Can use this function below, OR use Expo's Push Notification Tool-> https://expo.dev/notifications
-async function sendPushNotification(expoPushToken) {
-  const message = {
-    to: expoPushToken,
-    sound: 'default',
-    title: 'Original Title',
-    body: 'And here is the body!',
-    data: { someData: 'goes here' },
-  };
-
-  await fetch('https://exp.host/--/api/v2/push/send', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Accept-encoding': 'gzip, deflate',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(message),
-  });
 }
 
 async function registerForPushNotificationsAsync() {
@@ -122,8 +98,10 @@ async function registerForPushNotificationsAsync() {
   return token;
 }
 
-async function saveDeviceTokenToDatabase(expoPushToken) {
+async function checkForExpoPushTokenInDatabase(expoPushToken) {
 //	try {
+
+console.log("expoPushToken in checkFor function = ", expoPushToken);
 		// TODO change this to localhost or something else from config...
 		var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/saveDID.php";
 
@@ -148,7 +126,6 @@ async function saveDeviceTokenToDatabase(expoPushToken) {
 			if (Response[0].Message == "Success") {
 				  console.log("DID successfully saved to User Account");
 			}
-			console.log("Data Object after the fetch = ", Data);
 		})
 		.catch((error)=>{
 			console.error("ERROR FOUND" + error);
@@ -158,6 +135,7 @@ async function saveDeviceTokenToDatabase(expoPushToken) {
 		console.log(error);
 	}
 */
+	return expoPushToken;
 }
 
 

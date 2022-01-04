@@ -230,5 +230,8 @@ Starting a new expo project:
 		expo install expo-notifications
 		expo login (Expo Notification Service requires a dev account logged in) 
 		expo start
-		
-	
+
+***********************************************
+* Getting things needed for mobile-expo to work
+***********************************************		
+	$expo install react-native-tab-view

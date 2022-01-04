@@ -9,7 +9,7 @@ $sqlSelect = 	"SELECT name, topic from notifications N, subscription_notificatio
 		" AND SN.subscription_id = S.id " .
 		" AND E.id = N.event_id" .
 		" AND S.user_id = ? ";
-
+// TODO: fix exception handling that was originally implemented using "Message" => "Success" (Note line 32 is commented out)
 $stmtSelect = mysqli_stmt_init($conn);
 if (!mysqli_stmt_prepare($stmtSelect, $sqlSelect)) {
 	$Message = 'Unable to fetch Notifications from the database (Select Prepare)';
