@@ -4,33 +4,40 @@ include('db.php');
 $deviceToken	= $decodedData['Token'];
 $userId	= $decodedData['UserID'];
 
-$sqlSelect  = "SELECT notification_token FROM notification_devices WHERE notification_token = ?;";
+//$deviceToken	= "ExponentPushToken[xRVMIeId6t0BQS_eY94El7]";
+//$userId	= 19;
+
+$sqlSelect  = 	"SELECT notification_token " .
+		"  FROM notification_devices " .
+		" WHERE notification_token = ?" .
+		"   AND user_id = ?;";
+
 $stmtSelect = mysqli_stmt_init($conn);
 
 if (!mysqli_stmt_prepare($stmtSelect, $sqlSelect)) {
-	$Message = 'Unable to save Device ID to the database (Select Prepare)';
+	$Message = 'Unable to fetch Device ID for this User from the database (Select Prepare)';
 	$response[] = array("Message" => $Message);
 	echo json_encode($response);
 	exit();
 }
 
-mysqli_stmt_bind_param($stmtSelect, "s", $deviceToken);
+mysqli_stmt_bind_param($stmtSelect, "si", $deviceToken, $userId);
 
 if(mysqli_stmt_execute($stmtSelect)){
 	$result = mysqli_stmt_get_result($stmtSelect);
 	if(mysqli_num_rows($result) == 0){
-		$Message = 'This device is not registered for notifications in HypeRadar';
+		$Message = 'Not Registered';
 		$response[] = array("Message" => $Message);
 		echo json_encode($response);
 	} else {
-		$Message = 'This device already has a device token in HypeRadar';
+		$Message = 'Registered';
 		$response[] = array("Message" => $Message);
 		echo json_encode($response);
 		exit();
 	}
 
 } else {
-    $Message = 'Unable to save Device ID to the database (1)';
+    $Message = 'Unable to fetch Device ID for this User from the database (Select Execute)';
 }
 
 

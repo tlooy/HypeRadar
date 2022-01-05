@@ -14,18 +14,15 @@ Notifications.setNotificationHandler({
 	}),
 });
 
-
-
-// Make userID global so it can be available when we persist the notification device in a method called in a promise that already sends the token
 let userID;
-
 export default function App({ navigation }) {
 	const [expoPushToken, setExpoPushToken] = useState('');
 	const [notification, setNotification] = useState(false);
 	const notificationListener = useRef();
 	const responseListener = useRef();
 
-
+// TODO: why doesn't this work?  I get an occasional promise rejection saying "Can't find variable: userID 
+//	const [userID, setUserID] = useState(navigation.getParam('UserID'));
 	userID = navigation.getParam('UserID');
 	useEffect(() => {
 		registerForPushNotificationsAsync()
@@ -104,7 +101,7 @@ async function checkForExpoPushTokenInDatabase(expoPushToken) {
 //	try {
 
 		// TODO change this to localhost or something else from config...
-		var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/saveDID.php";
+		var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/fetchDID.php";
 
 		var headers = {
 			'Accept' : 'application/json',
@@ -123,9 +120,8 @@ async function checkForExpoPushTokenInDatabase(expoPushToken) {
 		})
 		.then((Response)=>Response.json())
 		.then((Response)=>{
-			alert(Response[0].Message)
-			if (Response[0].Message == "Success") {
-				  console.log("DID successfully saved to User Account");
+			if (Response[0].Message == "Not Registered") {
+				alert("This device is not registered to receive realtime notifications from your HypeRadar account.  Press the Register Device below to recieve notifications.")
 			}
 		})
 		.catch((error)=>{
