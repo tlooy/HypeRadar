@@ -11,7 +11,7 @@ const screens = {
         HomeScreen: {
         screen: Home,
     },
-        NotificationScreen: {
+        NotificationsScreen: {
         screen: Notifications,
     },
 

@@ -14,6 +14,8 @@ Notifications.setNotificationHandler({
 	}),
 });
 
+
+
 // Make userID global so it can be available when we persist the notification device in a method called in a promise that already sends the token
 let userID;
 
@@ -22,6 +24,7 @@ export default function App({ navigation }) {
 	const [notification, setNotification] = useState(false);
 	const notificationListener = useRef();
 	const responseListener = useRef();
+
 
 	userID = navigation.getParam('UserID');
 	useEffect(() => {
@@ -57,11 +60,10 @@ export default function App({ navigation }) {
 
 			<Text>Expo push token: {expoPushToken}</Text>
 			<Button
-				title="Press to Register for Push Notifications (not functioning yet...)"
-//				onPress={async () => {
-//					await sendPushNotification(expoPushToken);
+				title="Go to your Notifications"
 				onPress= {() =>  {
-					this.props.navigation.navigate("HomeScreen", { UserID: Response[1].UserID });
+					navigation.navigate("NotificationsScreen", {UserID: userID});
+//					navigation.navigate("NotificationsScreen");
 				}}
 	      		/>
 		</View>
@@ -101,7 +103,6 @@ async function registerForPushNotificationsAsync() {
 async function checkForExpoPushTokenInDatabase(expoPushToken) {
 //	try {
 
-console.log("expoPushToken in checkFor function = ", expoPushToken);
 		// TODO change this to localhost or something else from config...
 		var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/saveDID.php";
 

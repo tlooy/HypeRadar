@@ -41,8 +41,6 @@ export default class signin extends Component {
 			.then((Response)=>Response.json())
 			.then((Response)=>{
 				if (Response[0].Message == "Success") {
-					alert(Response[0].Message+"! Your User ID = "+Response[1].UserID);
-					console.log(Data);
 					console.log( "UserID = ", Response[1].UserID);
 					this.props.navigation.navigate("HomeScreen", { UserID: Response[1].UserID });
 				} else {

@@ -1,8 +1,8 @@
 <?php
 include('db.php');
 
-//$userId	= $decodedData['UserID'];
-$userId	= 18;
+$userId	= $decodedData['UserID'];
+//$userId	= 18;
 
 $sqlSelect = 	"SELECT name, topic from notifications N, subscription_notifications SN, subscriptions S, events E " .
 		" WHERE N.id = SN.notification_id " . 
