@@ -3,7 +3,7 @@
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, Button, Platform } from 'react-native';
+import { Component, Text, View, Button, Platform } from 'react-native';
 import styles from './style';
 
 Notifications.setNotificationHandler({
@@ -14,18 +14,23 @@ Notifications.setNotificationHandler({
 	}),
 });
 
+// TODO: Get these two variables working with useState rather than global variables
 let userID;
+//let registeredFlag = false;
+
 export default function App({ navigation }) {
 	const [expoPushToken, setExpoPushToken] = useState('');
 	const [notification, setNotification] = useState(false);
+	const [registeredFlag, setRegisteredFlag] = useState(false);
 	const notificationListener = useRef();
 	const responseListener = useRef();
 
 // TODO: why doesn't this work?  I get an occasional promise rejection saying "Can't find variable: userID 
 //	const [userID, setUserID] = useState(navigation.getParam('UserID'));
+
 	userID = navigation.getParam('UserID');
 	useEffect(() => {
-		registerForPushNotificationsAsync()
+		getPushTokenFromExpo()
 		.then(token => checkForExpoPushTokenInDatabase(token))
 		.then(token => setExpoPushToken(token));
 		
@@ -45,7 +50,7 @@ export default function App({ navigation }) {
 			Notifications.removeNotificationSubscription(responseListener.current);
 		};
 	}, []);
-
+	
 	return (
 		<View
 			style={{
@@ -56,18 +61,26 @@ export default function App({ navigation }) {
 			<Text>User ID: { userID }</Text>
 
 			<Text>Expo push token: {expoPushToken}</Text>
+
+			<Button
+				disabled={registeredFlag}
+				title="Register for Realtime Notifications"
+				onPress= {() =>  {
+					saveExpoPushToken(expoPushToken, userID);
+				}}
+	      		/>
+
 			<Button
 				title="Go to your Notifications"
 				onPress= {() =>  {
 					navigation.navigate("NotificationsScreen", {UserID: userID});
-//					navigation.navigate("NotificationsScreen");
 				}}
 	      		/>
 		</View>
 	);
 }
 
-async function registerForPushNotificationsAsync() {
+async function getPushTokenFromExpo() {
 	let token;
 	if (Constants.isDevice) {
 		const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -98,8 +111,6 @@ async function registerForPushNotificationsAsync() {
 }
 
 async function checkForExpoPushTokenInDatabase(expoPushToken) {
-//	try {
-
 		// TODO change this to localhost or something else from config...
 		var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/fetchDID.php";
 
@@ -121,18 +132,48 @@ async function checkForExpoPushTokenInDatabase(expoPushToken) {
 		.then((Response)=>Response.json())
 		.then((Response)=>{
 			if (Response[0].Message == "Not Registered") {
-				alert("This device is not registered to receive realtime notifications from your HypeRadar account.  Press the Register Device below to recieve notifications.")
+				alert("This device is not registered to receive realtime notifications from your HypeRadar account.  Press the Register Device button below to begin recieving notifications.");
+//				setRegisteredFlag(false);
 			}
 		})
 		.catch((error)=>{
 			console.error("ERROR FOUND" + error);
 		})
-/*
-	} catch (error) {
-		console.log(error);
-	}
-*/
+
 	return expoPushToken;
 }
 
+async function saveExpoPushToken(expoPushToken, userID) {
+		// TODO change this to localhost or something else from config...
+		var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/saveDID.php";
 
+		var headers = {
+			'Accept' : 'application/json',
+			'Content-Type' : 'application/json'
+		};
+
+		var Data = {
+			Token: expoPushToken,
+			UserID: userID
+		};
+
+		fetch(APIURL,{
+			method: 'POST',
+			headers: headers,
+			body: JSON.stringify(Data)
+		})
+		.then((Response)=>Response.json())
+		.then((Response)=>{
+			if (Response[0].Message != "Success") {
+				alert(Response[0].Message);
+//				setRegisteredFlag(false);
+			} else {
+				alert(Response[0].Message);
+//				setRegisteredFlag(true);
+			} 		
+		})
+		.catch((error)=>{
+			console.error("ERROR FOUND" + error);
+		})
+	return expoPushToken;
+}  

@@ -1,7 +1,7 @@
 // https://www.youtube.com/watch?v=IuYo009yc8w
 
 
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { View, Text, FlatList} from 'react-native';
 import styles from './style';
 
@@ -13,16 +13,15 @@ export default class Notifications extends Component {
 	
 	userID = "";
 	state = { data : [] };
-/* TODO: got to get this to work.  Currently returns an 'Unexpected token' error.
+/* TODO: got to get this to work.  Currently returns an 'Unexpected token' error on second '('.
+
 	useEffect(() => {
 		this.fetchNotifications();		
-	});
+	}, []);
 */
-
 	componentDidMount() {
 		this.fetchNotifications();	
 	}
-
 	fetchNotifications = async() => {
 	this.userID = this.props.navigation.getParam('UserID');
 		var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/fetchNotifications.php";
