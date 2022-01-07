@@ -180,18 +180,18 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="mt-5 mb-3 clearfix">
-                        <h2 class="pull-left">Notification Status List</h2>
-                        <a href="./createRecord.php?table=notification_statuses" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add New Notification Status</a>
+                        <h2 class="pull-left">Topic Status List</h2>
+                        <a href="./createRecord.php?table=topic_statuses" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add New Topic Status</a>
                     </div>
                     <?php
                     // Attempt select query execution
-                    $sql = "SELECT * FROM notification_statuses";
+                    $sql = "SELECT * FROM topic_statuses";
                     if($result = mysqli_query($conn, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo '<table class="table table-bordered table-striped">';
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th>Notification Status Name</th>";
+                                        echo "<th>Topic Status Name</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
@@ -199,9 +199,9 @@
                                     echo "<tr>";
                                         echo "<td>" . $row['name'] . "</td>";
                                         echo "<td>";
-                                            echo '<a href="./readRecord.php?id='  . $row['id'] .'&table=notification_statuses'.'" class="mr-3" title="View Notification Status" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
-                                            echo '<a href="./updateRecord.php?id='. $row['id'] .'&table=notification_statuses'.'" class="mr-3" title="Update Notification Status" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
-                                            echo '<a href="./deleteRecord.php?id='. $row['id'] .'&table=notification_statuses'.'" title="Delete Notification Status" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
+                                            echo '<a href="./readRecord.php?id='  . $row['id'] .'&table=topic_statuses'.'" class="mr-3" title="View Topic Status" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
+                                            echo '<a href="./updateRecord.php?id='. $row['id'] .'&table=topic_statuses'.'" class="mr-3" title="Update Topic Status" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
+                                            echo '<a href="./deleteRecord.php?id='. $row['id'] .'&table=topic_statuses'.'" title="Delete Topic Status" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
                                         echo "</td>";
                                     echo "</tr>";
                                 }

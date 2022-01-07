@@ -7,11 +7,11 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     // Include config file
 
     // Prepare a select statements
-    $sql_event   	    = "SELECT * FROM events WHERE id = ?";
-    $sql_genre 	        = "SELECT * FROM genres WHERE id = ?";
-    $sql_franchise 	    = "SELECT * FROM franchises WHERE id = ?";
-    $sql_event_type     = "SELECT * FROM event_types WHERE id = ?";
-    $sql_notifications 	= "SELECT N.topic, N.id, S.name FROM notifications N, notification_statuses S " .
+    $sql_event   	    	= "SELECT * FROM events WHERE id = ?";
+    $sql_genre 		= "SELECT * FROM genres WHERE id = ?";
+    $sql_franchise 		= "SELECT * FROM franchises WHERE id = ?";
+    $sql_event_type    	= "SELECT * FROM event_types WHERE id = ?";
+    $sql_topics 		= "SELECT N.topic, N.id, S.name FROM topics N, topic_statuses S " .
                           " WHERE N.event_id = ? " .
                           "   AND N.status_id = S.id " .
                           " ORDER BY create_datetime desc";
@@ -64,11 +64,11 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                 $row_franchise 	= mysqli_fetch_array($result_franchise, MYSQLI_ASSOC);
                 $franchise_name 	= $row_franchise["name"];
 
-                // Retrieve notifications using Id
-                $stmt_notifications = mysqli_prepare($conn, $sql_notifications);
-	            mysqli_stmt_bind_param($stmt_notifications, "i", $param_event_id);
-                mysqli_stmt_execute($stmt_notifications);
-	            $result_notifications 	= mysqli_stmt_get_result($stmt_notifications);
+                // Retrieve topics using Id
+                $stmt_topics = mysqli_prepare($conn, $sql_topics);
+	            mysqli_stmt_bind_param($stmt_topics, "i", $param_event_id);
+                mysqli_stmt_execute($stmt_topics);
+	            $result_topics = mysqli_stmt_get_result($stmt_topics);
 
             } else{
                 // URL doesn't contain valid id parameter. Redirect to error page
@@ -154,25 +154,25 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mt-5 mb-3 clearfix">
-                                <h2 class="pull-left">Event Notifications</h2>
-                                <?php echo '<a href="./createEventNotification.php?id=' . $param_event_id . '" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add Event Notification</a>'; ?>
+                                <h2 class="pull-left">Event Topics</h2>
+                                <?php echo '<a href="./createEventTopic.php?id=' . $param_event_id . '" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add Event Topic</a>'; ?>
                             </div>
 
                             <?php
-                                if(mysqli_num_rows($result_notifications) > 0) {
+                                if(mysqli_num_rows($result_topics) > 0) {
                                     echo '<table class="table table-bordered table-striped">';
                                         echo "<thead> <tr>"; 
                                             echo "<th> Topic  </th>";
                                             echo "<th> Status </th>";
                                         echo "</tr> </thead>";
                                         echo "<tbody>";
-                                        while($row = mysqli_fetch_array($result_notifications)){
+                                        while($row = mysqli_fetch_array($result_topics)){
                                             echo "<tr>";
                                                 echo "<td width=50%>" . $row['topic']  . "</td>";
                                                 echo "<td width=25%>" . $row['name'] . "</td>";
                                                 echo "<td width=25%>";
-                                                    echo '<a href="./updateEventNotification.php?id=' . $row['id'] .'" class="mr-3" title="Update Notification" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
-                                                    echo '<a href="./deleteEventNotification.php?id=' . $row['id'] .'&table=events'.'" title="Delete Notification" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
+                                                    echo '<a href="./updateEventTopic.php?id=' . $row['id'] .'" class="mr-3" title="Update Topic" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
+                                                    echo '<a href="./deleteEventTopic.php?id=' . $row['id'] .'&table=events'.'" title="Delete Topic" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
                                                 echo "</td>";
                                             echo "</tr>";
                                         }

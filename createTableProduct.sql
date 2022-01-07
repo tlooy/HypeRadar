@@ -163,3 +163,26 @@ CREATE TABLE subscription_notifications (
     created_datetime DATE
 );
 
+[Jan 6, 2022]
+CREATE TABLE topic_statuses (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(255) NOT NULL
+);
+
+INSERT INTO topic_statuses (name, description) select name, description from notification_statuses;
+
+RENAME TABLE notifications TO topics;
+
+Note: Before doing the next step verify that the FOREIGN KEY is the right one using the following:
+SELECT TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME 
+  FROM INFORMATION_SCHEMA. KEY_COLUMN_USAGE 
+ WHERE REFERENCED_TABLE_SCHEMA = 'testing' AND REFERENCED_TABLE_NAME = 'notification_statuses';
+ALTER TABLE topics drop FOREIGN KEY topics_ibfk_3;
+
+DROP TABLE notification_statuses;
+
+ALTER TABLE topics ADD FOREIGN KEY (status_id)
+      REFERENCES topic_statuses(id)
+      ON DELETE RESTRICT;
+

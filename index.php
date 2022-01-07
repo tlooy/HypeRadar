@@ -73,7 +73,7 @@
 
                 <?php
                     $sql =  "SELECT COUNT(E.id) count, name " .
-                            "  FROM events E, notifications N " .
+                            "  FROM events E, topics N " .
                             " WHERE E.id = N.event_id " .
                             " GROUP BY E.id" . 
                             " ORDER BY 1 DESC"; 
@@ -108,7 +108,7 @@
 
                 <?php
                     $sql =  "SELECT COUNT(U.id) count, username " .
-                            "  FROM users U, notifications N " .
+                            "  FROM users U, topics N " .
                             " WHERE U.id = N.creator_user_id " .
                             " GROUP BY U.username " .
                             " ORDER BY 1 DESC"; 
@@ -118,7 +118,7 @@
                             echo '<table style="max-width:350px" class="table table-bordered table-striped d-inline-block align-top">';
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th>Top Notification Creators</th>";
+                                        echo "<th>Top Topic Creators</th>";
                                         echo "<th>Count</th>";
                                     echo "</tr>";
                                 echo "</thead>";

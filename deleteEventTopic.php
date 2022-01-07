@@ -6,7 +6,7 @@
 if(isset($_POST["id"]) && !empty($_POST["id"])){
     
     // Prepare a delete statement
-    $sql = "DELETE FROM topicss WHERE id = ? ;";
+    $sql = "DELETE FROM topics WHERE id = ? ;";
 
     if($stmt = mysqli_prepare($conn, $sql)){
         // Bind variables to the prepared statement as parameters
@@ -24,7 +24,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     }
      
     // Close statement
-    mysqli_stmt_close($stmt);
+//    mysqli_stmt_close($stmt);
     
     // Close connection
     mysqli_close($conn);

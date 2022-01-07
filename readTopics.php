@@ -7,10 +7,10 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     // Include config file
 
     // Prepare a select statements
-	$sql_topics = " SELECT N.topic, N.id " .
-			"  FROM notifications N, notification_statuses S " .
-			" WHERE N.event_id = ? " .
-			"   AND N.status_id = S.id " .
+	$sql_topics = " SELECT T.topic, T.id " .
+			"  FROM topics T, topic_statuses S " .
+			" WHERE T.event_id = ? " .
+			"   AND T.status_id = S.id " .
 			"   AND S.name = 'Published' " .
 			" ORDER BY create_datetime desc";
     

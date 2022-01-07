@@ -234,4 +234,8 @@ Starting a new expo project:
 ***********************************************
 * Getting things needed for mobile-expo to work
 ***********************************************		
-	$expo install react-native-tab-view
+	To get navigation working:
+		npm install @react-navigation/native 
+		expo install react-native-screens react-native-safe-area-context
+		npm install @react-navigation/native-stack
+	

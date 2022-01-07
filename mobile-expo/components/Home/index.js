@@ -71,9 +71,9 @@ export default function App({ navigation }) {
 	      		/>
 
 			<Button
-				title="Go to your Notifications"
+				title="Go to your Topics"
 				onPress= {() =>  {
-					navigation.navigate("NotificationsScreen", {UserID: userID});
+					navigation.navigate("TopicsScreen", {UserID: userID});
 				}}
 	      		/>
 		</View>
