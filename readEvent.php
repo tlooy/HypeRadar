@@ -4,16 +4,16 @@ require_once "./header.php";
 
 // Check existence of id parameter before processing further
 if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
-    // Include config file
 
     // Prepare a select statements
     $sql_event   	    	= "SELECT * FROM events WHERE id = ?";
     $sql_genre 		= "SELECT * FROM genres WHERE id = ?";
     $sql_franchise 		= "SELECT * FROM franchises WHERE id = ?";
     $sql_event_type    	= "SELECT * FROM event_types WHERE id = ?";
-    $sql_topics 		= "SELECT N.topic, N.id, S.name FROM topics N, topic_statuses S " .
-                          " WHERE N.event_id = ? " .
-                          "   AND N.status_id = S.id " .
+    $sql_topics 		= "SELECT T.topic, T.id topic_id, S.name " .
+                                 "  FROM topics T, topic_statuses S " .
+                          " WHERE T.event_id = ? " .
+                          "   AND T.status_id = S.id " .
                           " ORDER BY create_datetime desc";
     
     if($stmt_event = mysqli_prepare($conn, $sql_event)){
@@ -168,11 +168,16 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                                         echo "<tbody>";
                                         while($row = mysqli_fetch_array($result_topics)){
                                             echo "<tr>";
-                                                echo "<td width=50%>" . $row['topic']  . "</td>";
-                                                echo "<td width=25%>" . $row['name'] . "</td>";
-                                                echo "<td width=25%>";
-                                                    echo '<a href="./updateEventTopic.php?id=' . $row['id'] .'" class="mr-3" title="Update Topic" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
-                                                    echo '<a href="./deleteEventTopic.php?id=' . $row['id'] .'&table=events'.'" title="Delete Topic" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
+                                                echo "<td width=60%>" . $row['topic']  . "</td>";
+                                                echo "<td width=20%>" . $row['name'] . "</td>";
+                                                echo "<td width=20%>";
+                                                    echo '<a href="./updateEventTopic.php?id=' . 
+                                                    		$row['topic_id'] .
+                                            			'" class="mr-3" title="Update Topic" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
+                                                    echo '<a href="./deleteEventTopic.php?id=' . 
+                                                    		$row['topic_id'] .
+                                                    		'" title="Delete Topic" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
+                                                    echo '<a href="./expoPushNotifications.php?topic_id=' . $row['topic_id'] . '" class="button">Publish</a>';
                                                 echo "</td>";
                                             echo "</tr>";
                                         }

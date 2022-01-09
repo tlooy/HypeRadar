@@ -63,14 +63,6 @@ export default function App({ navigation }) {
 			<Text>Expo push token: {expoPushToken}</Text>
 
 			<Button
-				disabled={registeredFlag}
-				title="Register for Realtime Notifications"
-				onPress= {() =>  {
-					saveExpoPushToken(expoPushToken, userID);
-				}}
-	      		/>
-
-			<Button
 				title="Go to your Topics"
 				onPress= {() =>  {
 					navigation.navigate("TopicsScreen", {UserID: userID});
@@ -132,8 +124,7 @@ async function checkForExpoPushTokenInDatabase(expoPushToken) {
 		.then((Response)=>Response.json())
 		.then((Response)=>{
 			if (Response[0].Message == "Not Registered") {
-				alert("This device is not registered to receive realtime notifications from your HypeRadar account.  Press the Register Device button below to begin recieving notifications.");
-//				setRegisteredFlag(false);
+				saveExpoPushToken(expoPushToken, userID);
 			}
 		})
 		.catch((error)=>{
@@ -166,10 +157,8 @@ async function saveExpoPushToken(expoPushToken, userID) {
 		.then((Response)=>{
 			if (Response[0].Message != "Success") {
 				alert(Response[0].Message);
-//				setRegisteredFlag(false);
 			} else {
-				alert(Response[0].Message);
-//				setRegisteredFlag(true);
+				alert("Successfully registered this device to receive real-time notifications.");
 			} 		
 		})
 		.catch((error)=>{
