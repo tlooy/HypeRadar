@@ -3,7 +3,7 @@
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import React, { useState, useEffect, useRef } from 'react';
-import { Component, Text, View, Button, Platform } from 'react-native';
+import { Component, Text, View, Button, Platform, FlatList } from 'react-native';
 import styles from './style';
 
 Notifications.setNotificationHandler({
@@ -16,12 +16,17 @@ Notifications.setNotificationHandler({
 
 // TODO: Get these two variables working with useState rather than global variables
 let userID;
+let eventArray = [];
+
 //let registeredFlag = false;
 
 export default function App({ navigation }) {
 	const [expoPushToken, setExpoPushToken] = useState('');
 	const [notification, setNotification] = useState(false);
 	const [registeredFlag, setRegisteredFlag] = useState(false);
+
+	const [events, setEvents] = useState( { data : [] });
+
 	const notificationListener = useRef();
 	const responseListener = useRef();
 
@@ -33,7 +38,52 @@ export default function App({ navigation }) {
 		getPushTokenFromExpo()
 		.then(token => checkForExpoPushTokenInDatabase(token))
 		.then(token => setExpoPushToken(token));
-		
+
+/* 	This doesn't work and I don't know why.  I put the contents of the getuserSubscribedEvents
+	call inline below to get it to work
+		Response = getUserSubscribedEvents();
+		.then(Response => { 
+			console.log("2 - Response: ", Response);
+			setEvents( { data: Response } )
+			eventArray = Response;
+			console.log("3 - eventArray: ", eventArray);
+		} );
+*/
+
+
+
+		var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/fetchEvents.php";
+
+		var headers = {
+			'Accept' : 'application/json',
+			'Content-Type' : 'application/json'
+		};
+
+		var Data = {
+			UserID: userID
+		};
+
+		fetch(APIURL,{
+			method: 'POST',
+			headers: headers,
+			body: JSON.stringify(Data)
+		})
+		.then(Response => Response.json())
+		.then(Response => {
+			setEvents( { data: Response } ); 
+			console.log("Response: ", Response);
+			console.log("events.data: ", events.data.Events);
+		})
+		.catch((error)=>{
+			console.error("ERROR FOUND" + error);
+		})
+
+
+
+
+
+
+
 		// This listener is fired whenever a notification is received while the app is foregrounded
 		notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
 			setNotification(notification);
@@ -55,12 +105,23 @@ export default function App({ navigation }) {
 		<View
 			style={{
 				flex: 1,
-				alignItems: 'center',
+				alignText: 'left',
 				justifyContent: 'space-around',
 			}}>
-			<Text>User ID: { userID }</Text>
+			<Text>User ID: { userID }{"\n"}</Text>
 
-			<Text>Expo push token: {expoPushToken}</Text>
+			<Text>{ expoPushToken }{"\n"}</Text>
+
+			<Text>Your Subscribed Events</Text>
+			<Text>----------------------</Text>
+			<FlatList 
+				data={ events.data.Events }
+				keyExtractor={(x, i) => i}
+				renderItem={({item}) => 
+					<Text>
+						{item.name} 
+					</Text>}
+			/>
 
 			<Button
 				title="Go to your Topics"
@@ -165,4 +226,37 @@ async function saveExpoPushToken(expoPushToken, userID) {
 			console.error("ERROR FOUND" + error);
 		})
 	return expoPushToken;
+}  
+
+// I couldn't get this function to play nicely with the .then calls earlier in the code
+function getUserSubscribedEvents() {
+//async function getUserSubscribedEvents() {
+	// TODO change this to localhost or something else from config...
+	var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/fetchEvents.php";
+
+	var headers = {
+		'Accept' : 'application/json',
+		'Content-Type' : 'application/json'
+	};
+
+	var Data = {
+		UserID: userID
+	};
+
+	fetch(APIURL,{
+		method: 'POST',
+		headers: headers,
+		body: JSON.stringify(Data)
+	})
+	.then(Response => Response.json())
+	.then(Response => {
+
+		console.log("1 - Response: ", Response);
+		return Response;	
+	})
+	.catch((error)=>{
+		console.error("ERROR FOUND" + error);
+	})
+
+//	return Response;
 }  

@@ -48,8 +48,8 @@ export default class Notifications extends Component {
 	render() {
 		return (
 			<View style={styles.view}>
-			<Text>UserID: { this.userID }</Text>
-			<Text>Events | Notifications</Text>
+				<Text>UserID: { this.userID }</Text>
+				<Text>Events | Notifications</Text>
 				<FlatList 
 					data={this.state.data}
 					keyExtractor={(x, i) => i}
