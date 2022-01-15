@@ -69,7 +69,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h2 class="mt-5">Query Events</h2>
-                    <p>Please fill this form and query to find Product records in the database.</p>
+                    <p>Please fill this form and query to find Event records in Hype Radar!</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
                         <div class="form-group">

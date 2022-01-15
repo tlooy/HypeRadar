@@ -32,7 +32,6 @@ export default class signin extends Component {
 				'Email': Email,
 				'Password': Password
 			};
-
 			fetch(APIURL,{
 				method: 'POST',
 				headers: headers,
@@ -43,7 +42,7 @@ export default class signin extends Component {
 				if (Response[0].Message == "Success") {
 					this.props.navigation.navigate("HomeScreen", { UserID: Response[1].UserID });
 				} else {
-					alert("Invalid Username/eMail or Password")
+					alert("Invalid Username/eMail or Password: " + Response[0].Message)
 				}
 			})
  			.catch((error)=>{
@@ -63,7 +62,11 @@ export default class signin extends Component {
     return (
       <View style={styles.viewStyle}>
         <View style={styles.action}>
-          <Text style={[{color:'#06baab', textAlign:'center', fontSize: 30}]}> Welcome to HypeRadar! {"\n"}</Text>
+          <Text style={[{color:'#06baab', textAlign:'center', fontSize: 30}]}> Welcome to Hype Radar!</Text>
+        </View>
+
+        <View style={styles.action}>
+          <Text style={[{color:'#06baab', textAlign:'center', fontSize: 18}]}> { global.environment }{"\n"}</Text>
         </View>
 
         <View style={styles.action}>
