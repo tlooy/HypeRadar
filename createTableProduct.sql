@@ -186,3 +186,4 @@ ALTER TABLE topics ADD FOREIGN KEY (status_id)
       REFERENCES topic_statuses(id)
       ON DELETE RESTRICT;
 
+[Jan 13, 2022: Product Database up to date]

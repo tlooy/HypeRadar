@@ -86,7 +86,9 @@
             					<?php endwhile; ?>
             				</select>
 
+                            <br>
                             <label>-- OR --</label>
+                            <br>
 
                             <label>Select a Genre</label>
 				            <select name="selected_genre">
@@ -115,9 +117,9 @@
 
 
                         <?php if (isset($_SESSION["id"])) {
-                            echo '<input type="submit" class="btn btn-primary" name="QueryMine" value="Query Mine">';
+                            echo '<input type="submit" class="btn btn-primary" name="QueryMine" value="Query Just My Events">';
                         } ?>
-                        <input type="submit" class="btn btn-primary" name="QueryAll"  value="Query All">
+                        <input type="submit" class="btn btn-primary" name="QueryAll"  value="Query All Events">
                         <a href="./index.php" class="btn btn-secondary ml-2">Cancel</a>
 
                     <div class="contents">

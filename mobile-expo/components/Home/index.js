@@ -51,8 +51,8 @@ export default function App({ navigation }) {
 */
 
 
-
-		var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/fetchEvents.php";
+// This section didn't work as a function so I put it inline here to get it to work.
+		var APIURL = global.environment + "fetchEvents.php";
 
 		var headers = {
 			'Accept' : 'application/json',
@@ -71,8 +71,6 @@ export default function App({ navigation }) {
 		.then(Response => Response.json())
 		.then(Response => {
 			setEvents( { data: Response } ); 
-			console.log("Response: ", Response);
-			console.log("events.data: ", events.data.Events);
 		})
 		.catch((error)=>{
 			console.error("ERROR FOUND" + error);
@@ -109,6 +107,8 @@ export default function App({ navigation }) {
 				justifyContent: 'space-around',
 			}}>
 			<Text>User ID: { userID }{"\n"}</Text>
+
+			<Text>Environment: { global.environment }{"\n"}</Text>
 
 			<Text>{ expoPushToken }{"\n"}</Text>
 
@@ -165,7 +165,7 @@ async function getPushTokenFromExpo() {
 
 async function checkForExpoPushTokenInDatabase(expoPushToken) {
 		// TODO change this to localhost or something else from config...
-		var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/fetchDID.php";
+		var APIURL = global.environment + "fetchDID.php";
 
 		var headers = {
 			'Accept' : 'application/json',
@@ -197,7 +197,7 @@ async function checkForExpoPushTokenInDatabase(expoPushToken) {
 
 async function saveExpoPushToken(expoPushToken, userID) {
 		// TODO change this to localhost or something else from config...
-		var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/saveDID.php";
+		var APIURL = global.environment + "saveDID.php";
 
 		var headers = {
 			'Accept' : 'application/json',
@@ -232,7 +232,7 @@ async function saveExpoPushToken(expoPushToken, userID) {
 function getUserSubscribedEvents() {
 //async function getUserSubscribedEvents() {
 	// TODO change this to localhost or something else from config...
-	var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/fetchEvents.php";
+	var APIURL = global.environment + "fetchEvents.php";
 
 	var headers = {
 		'Accept' : 'application/json',

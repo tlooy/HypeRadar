@@ -21,7 +21,7 @@ export default class signin extends Component {
 			alert("Required Field Is Missing!!!");
 		}else{
 			// TODO change this to localhost or something else that will work when we promote this to prod
-			var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/signin.php";
+			var APIURL = global.environment + "signin.php";
 
 			var headers = {
 				'Accept' : 'application/json',
@@ -62,58 +62,63 @@ export default class signin extends Component {
   render() {
     return (
       <View style={styles.viewStyle}>
-          <View style={styles.action}>
-            <Text style={styles.txt}> Welcome to HypeRadar! </Text>
-          </View>
+        <View style={styles.action}>
+          <Text style={[{color:'#06baab', textAlign:'center', fontSize: 30}]}> Welcome to HypeRadar! {"\n"}</Text>
+        </View>
 
-          <View style={styles.action}>
-            <TextInput
-              placeholder="Enter Email or User Name"
-              placeholderTextColor="#ff0000"
-              style={styles.textInput}
-              onChangeText={email=>this.setState({email})}
-              />
-          </View>
+        <View style={styles.action}>
+          <TextInput
+            placeholder="Enter Email or User Name"
+            placeholderTextColor="#ff0000"
+            style={styles.textInput}
+            onChangeText={email=>this.setState({email})}
+            />
+        </View>
 
-          <View style={styles.action}>
-            <TextInput
-              placeholder="Enter Password"
-              placeholderTextColor="#ff0000"
-              style={styles.textInput}
-              secureTextEntry={this.state.secureTextEntry ? true : false}
-              onChangeText={password=>this.setState({password})}
-              />
-                <TouchableOpacity
-                  onPress={this.updateSecureTextEntry.bind(this)}>
-                  {this.state.secureTextEntry ?
-                  <Feather
-                  name="eye-off"
-                  color="grey"
-                  size={20}
-                  />
-                :  
-                  <Feather
-                  name="eye"
-                  color="black"
-                  size={20}
-                  />
-                }
-                </TouchableOpacity>  
-          </View>
+        <View style={styles.action}>
+          <TextInput
+            placeholder="Enter Password"
+            placeholderTextColor="#ff0000"
+            style={styles.textInput}
+            secureTextEntry={this.state.secureTextEntry ? true : false}
+            onChangeText={password=>this.setState({password})}
+            />
+              <TouchableOpacity
+                onPress={this.updateSecureTextEntry.bind(this)}>
+                {this.state.secureTextEntry ?
+                <Feather
+                name="eye-off"
+                color="grey"
+                size={20}
+                />
+              :  
+                <Feather
+                name="eye"
+                color="black"
+                size={20}
+                />
+              }
+              </TouchableOpacity>  
+        </View>
 
 
-                {/* Button */}
+        {/* Button */}
 
-                <View style={styles.loginButtonSection}>    
-                  <Pressable
-                    style={styles.loginButton} 
-                    onPress={()=>{
-                      this.CheckSigninCredentials()
-                    }}
-                    >
-                      <Text style={styles.text}>Sign In</Text>
-                  </Pressable>
-                </View>
+        <View style={styles.loginButtonSection}>    
+          <Pressable
+            style={styles.loginButton} 
+            onPress={()=>{
+              this.CheckSigninCredentials()
+            }}
+            >
+              <Text style={styles.text}>Sign In</Text>
+          </Pressable>
+        </View>
+
+        <View style={styles.action}>
+          <Text style={styles.txt}> {"\n"}{"\n"}(Note: by signing into the HypeRadar mobile app you are registering to receive real-time notifications of new Topics for the Events of which you have Subscriptions. </Text>
+        </View>
+
       </View>
     );
   }

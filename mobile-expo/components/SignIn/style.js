@@ -23,18 +23,20 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
     },
     action: {
-      flexDirection: 'row',
-      marginTop: 10,
-      paddingBottom: 5,
-      width: '100%'
-  },
+        flexDirection: 'row',
+        marginTop: 10,
+        paddingBottom: 5,
+        width: '100%',
+        justifyContent: 'center'
+    },
     text: {
         fontSize: 18,
         lineHeight: 21,
         fontWeight: 'bold',
         letterSpacing: 0.25,
         color: 'white',
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
+        textAlign: 'center'
       },
       loginButtonSection: {
         width: '100%',

@@ -24,7 +24,7 @@ export default class Notifications extends Component {
 	}
 	fetchNotifications = async() => {
 	this.userID = this.props.navigation.getParam('UserID');
-		var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/fetchNotifications.php";
+		var APIURL = global.environment + "fetchNotifications.php";
 
 		var headers = {
 			'Accept' : 'application/json',

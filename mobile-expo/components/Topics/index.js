@@ -24,7 +24,7 @@ export default class Topics extends Component {
 	}
 	fetchTopics = async() => {
 	this.userID = this.props.navigation.getParam('UserID');
-		var APIURL = "http://10.0.0.40/HypeRadar/mobile-expo/backend/fetchTopics.php";
+		var APIURL = global.environment + "fetchTopics.php";
 
 		var headers = {
 			'Accept' : 'application/json',
@@ -48,8 +48,10 @@ export default class Topics extends Component {
 	render() {
 		return (
 			<View style={styles.view}>
-			<Text>UserID: { this.userID }</Text>
-			<Text>Events | Topics</Text>
+			<Text>UserID: { this.userID }{"\n"}</Text>
+			<Text>Events   |   Topics</Text>
+			<Text>----------------------------</Text>
+
 				<FlatList 
 					data={this.state.data}
 					keyExtractor={(x, i) => i}
