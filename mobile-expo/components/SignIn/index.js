@@ -119,7 +119,7 @@ export default class signin extends Component {
         </View>
 
         <View style={styles.action}>
-          <Text style={styles.txt}> {"\n"}{"\n"}(Note: by signing into the HypeRadar mobile app you are registering to receive real-time notifications of new Topics for the Events of which you have Subscriptions. </Text>
+          <Text style={styles.txt}> {"\n"}{"\n"}(Note: by signing into the Hype Radar! mobile app you are registering to receive real-time notifications of new Topics for the Events of which you have Subscriptions. </Text>
         </View>
 
       </View>

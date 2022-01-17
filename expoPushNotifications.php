@@ -4,11 +4,11 @@ require_once "./header.php";
 
 // Check existence of id parameter before processing further
 if(isset($_GET["topic_id"]) && !empty(trim($_GET["topic_id"]))){
-	$sql_pushTokens =	"SELECT T.topic, E.name, ND.notification_token " .
+	$sql_pushTokens =	"SELECT T.topic, T.url, E.name, ND.notification_token " .
 				"  FROM topics T, events E, subscriptions S, users U, notification_devices ND " .
 				" WHERE T.event_id = E.id " .
 				"   AND E.id = S.event_id " .
-				"   AND S.user_id = U.id " .
+				"   AND S.user_id = U.id "  .
 				"   AND U.id = ND.user_id " .
 				"   AND T.id = ? " .
 				" ORDER BY create_datetime desc";
@@ -29,7 +29,10 @@ if(isset($_GET["topic_id"]) && !empty(trim($_GET["topic_id"]))){
 
 	while($row = mysqli_fetch_array($result_pushTokens)){
 		$payload_tokens[] = $row['notification_token'];
-		$payload_body = $row['name'] . ": " . $row['topic'];
+		$payload_body = "You have a ping from Hype Radar!\n" . 
+										$row['name']  . ": \n" . 
+										$row['topic'] . ": \n" . 
+										$row['url'];
 	}
 	$payload = array(
 	'to' => $payload_tokens,

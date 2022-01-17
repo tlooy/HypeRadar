@@ -10,7 +10,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     $sql_genre 		= "SELECT * FROM genres WHERE id = ?";
     $sql_franchise 		= "SELECT * FROM franchises WHERE id = ?";
     $sql_event_type    	= "SELECT * FROM event_types WHERE id = ?";
-    $sql_topics 		= "SELECT T.topic, T.id topic_id, S.name " .
+    $sql_topics 		= "SELECT T.topic, T.id topic_id, T.url, S.name status_name" .
                                  "  FROM topics T, topic_statuses S " .
                           " WHERE T.event_id = ? " .
                           "   AND T.status_id = S.id " .
@@ -163,13 +163,15 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                                     echo '<table class="table table-bordered table-striped">';
                                         echo "<thead> <tr>"; 
                                             echo "<th> Topic  </th>";
+                                            echo "<th> Topic  URL</th>";
                                             echo "<th> Status </th>";
                                         echo "</tr> </thead>";
                                         echo "<tbody>";
                                         while($row = mysqli_fetch_array($result_topics)){
                                             echo "<tr>";
-                                                echo "<td width=60%>" . $row['topic']  . "</td>";
-                                                echo "<td width=20%>" . $row['name'] . "</td>";
+                                                echo "<td width=60%>" . $row['topic']       . "</td>";
+                                                echo "<td width=60%>" . $row['url']         . "</td>";
+                                                echo "<td width=20%>" . $row['status_name'] . "</td>";
                                                 echo "<td width=20%>";
                                                     echo '<a href="./updateEventTopic.php?id=' . 
                                                     		$row['topic_id'] .

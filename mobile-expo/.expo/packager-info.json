@@ -3,8 +3,8 @@
   "expoServerPort": 19000,
   "packagerPort": 19000,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerNgrokUrl": "https://px-xij.tlooy24.mobile-expo.exp.direct",
+  "packagerNgrokUrl": "https://packager.px-xij.tlooy24.mobile-expo.exp.direct",
+  "ngrokPid": 5850,
   "webpackServerPort": null
 }

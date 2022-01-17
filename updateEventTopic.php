@@ -4,8 +4,8 @@ require_once "./config.php";
 require_once "./header.php";
  
 // Define variables and initialize with empty values
-$topic = $event_id = $source_id = $status_id =  "";
-$topic_err = $event_id_err = $source_err = $status_err = "";
+$topic = $event_id = $source_id = $status_id = $url = "";
+$topic_err = $event_id_err = $source_err = $status_err = $url_err = "";
  
 // Get drop list values for Event Topic Status values
     $sql_statuses = "SELECT * FROM topic_statuses";
@@ -29,23 +29,36 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
         $topic = $input_topic;
     }
 
+    // Validate topic URL
+    $input_url = trim($_POST["url"]);
+    if(empty($input_url)){
+        $url_err = "Please enter a topic URL.";
+/*
+    } elseif(!filter_var($input_url, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z0-9\s]+$/")))) {
+        $url_err = "Please enter a valid topic URL.";
+*/
+    } else{
+        $url = $input_url;
+    }
+
     $event_id        = mysqli_real_escape_string($conn,$_POST['EventId']);
     $source_id       = mysqli_real_escape_string($conn,$_POST['SourceId']);
     $status_id       = mysqli_real_escape_string($conn,$_POST['StatusId']);
         
     // Check input errors before inserting in database
-    if(empty($topic_err)){
+    if(empty($topic_err || $url_err)){
         // Prepare an update statement
-        $sql = "UPDATE topics SET topic=?, source_id=?, status_id=? WHERE id=?";
+        $sql = "UPDATE topics SET topic=?, source_id=?, status_id=?, url=? WHERE id=?";
 
         if($stmt = mysqli_prepare($conn, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "siii", $param_topic, $param_source_id, $param_status_id, $param_id);
+            mysqli_stmt_bind_param($stmt, "siisi", $param_topic, $param_source_id, $param_status_id, $param_url, $param_id );
             
             // Set parameters
             $param_topic 		         = $topic;
             $param_source_id             = $source_id;
             $param_status_id             = $status_id;
+            $param_url                   = $url;
             $param_id 	                 = $id;
             
             // Attempt to execute the prepared statement
@@ -96,6 +109,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     $event_id   = $row["event_id"];
                     $source_id  = $row["source_id"];
                     $status_id  = $row["status_id"];
+                    $url        = $row["url"];
 
                 } else{
                     // URL doesn't contain valid id. Redirect to error page
@@ -137,8 +151,14 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
                         <div class="form-group">
                             <label>Topic</label>
-                            <input type="text" name="topic" class="form-control <?php echo (!empty($topic_err)) ? 'is-invalid' : ''; ?>" 			value="<?php echo $topic; ?>">
+                            <input type="text" name="topic" class="form-control <?php echo (!empty($topic_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $topic; ?>">
                             <span class="invalid-feedback"><?php echo $topic_err;?></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Topic URL</label>
+                            <input type="text" name="url" class="form-control <?php echo (!empty($url_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $url; ?>">
+                            <span class="invalid-feedback"><?php echo $url_err;?></span>
                         </div>
                         
                         <div class="form-group">

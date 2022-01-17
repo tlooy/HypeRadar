@@ -238,4 +238,9 @@ Starting a new expo project:
 		npm install @react-navigation/native 
 		expo install react-native-screens react-native-safe-area-context
 		npm install @react-navigation/native-stack
+
 	
+**************************************************************
+* Installinhg Andriod Studio for expo Android emulator to work
+**************************************************************
+	https://medium.com/@samailabalap/setting-up-react-native-with-expo-and-android-studio-on-ubuntu-18-04-84340bc2cc3c

@@ -17,8 +17,8 @@
 	}
 
 	$eventId = $id;
-	$topic = $source_id = $status = "";
-	$topic_err = $source_id_err = $status_err = "";
+	$topic = $source_id = $status = $url = "";
+	$topic_err = $source_id_err = $status_err = $url_err = "";
 
 	$sql_Sources 	= "SELECT * FROM sources";
 	$all_Sources 	= mysqli_query($conn,$sql_Sources);
@@ -38,6 +38,16 @@
     		$topic = $input_topic;
 		}
 
+	    	// Validate topic URL
+		$input_url = mysqli_real_escape_string($conn,$_POST['URL']);
+
+		if(empty($input_url)){
+    		$url_err = "Please enter a topic URL.";
+		} elseif(!filter_var($input_topic, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z0-9\s]+$\/:/")))){
+    		$name_err = "Please enter a valid topic URL.";
+		} else{
+    		$url = $input_url;
+		}
 
 		$eventId 		= mysqli_real_escape_string($conn,$_POST['EventId']);
 		$sourceId 		= mysqli_real_escape_string($conn,$_POST['SourceId']);
@@ -46,17 +56,18 @@
 		
 		if(empty($notication_err) ){
 			$sql_insert =
-			"INSERT INTO topics (topic, event_id, source_id, status_id, create_datetime, creator_user_id) VALUES (?, ?, ?, ?, ?, ?)";
+			"INSERT INTO topics (topic, event_id, source_id, status_id, create_datetime, creator_user_id, url) VALUES (?, ?, ?, ?, ?, ?, ?)";
          
 	        	if($stmt = mysqli_prepare($conn, $sql_insert)){
-	        	    mysqli_stmt_bind_param($stmt, "siissi", $param_topic, $param_eventId, $param_sourceId, $param_statusId, 
-	        	    	$param_create_datetime, $param_creator_user_id);
+	        	    mysqli_stmt_bind_param($stmt, "siissis", $param_topic, $param_eventId, $param_sourceId, $param_statusId, 
+	        	    	$param_create_datetime, $param_creator_user_id, $param_url);
 	        	    $param_topic			= $topic;
         		    $param_eventId 			= $eventId;
        		    	$param_sourceId 		= $sourceId;
        		    	$param_statusId		 	= $statusId;
        		    	$param_create_datetime 	= $systemDt;
        		    	$param_creator_user_id 	= $_SESSION['id'];
+       		    	$param_url				= $url;
 
 	        	    if(mysqli_stmt_execute($stmt)){
 	        	        header("location: ./contributor.php");
@@ -101,6 +112,12 @@
                             <label>Topic</label>
                             <input type="text" name="Topic" class="form-control <?php echo (!empty($topic_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $topic; ?>">
                             <span class="invalid-feedback"><?php echo $topic_err;?></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Topic URL</label>
+                            <input type="text" name="URL" class="form-control <?php echo (!empty($url_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $url; ?>">
+                            <span class="invalid-feedback"><?php echo $url_err;?></span>
                         </div>
 
                         <div class="form-group">
