@@ -2,7 +2,7 @@
 
 
 import React, { Component, useEffect } from 'react';
-import { View, Text, FlatList} from 'react-native';
+import { View, Text, FlatList, Linking, TouchableOpacity} from 'react-native';
 import styles from './style';
 
 export default class Topics extends Component {
@@ -22,6 +22,7 @@ export default class Topics extends Component {
 	componentDidMount() {
 		this.fetchTopics();	
 	}
+
 	fetchTopics = async() => {
 	this.userID = this.props.navigation.getParam('UserID');
 		var APIURL = global.environment + "fetchTopics.php";
@@ -55,10 +56,14 @@ export default class Topics extends Component {
 				<FlatList 
 					data={this.state.data}
 					keyExtractor={(x, i) => i}
-					renderItem={({item}) => 
-						<Text>
-							{item.name} | {item.topic}
-						</Text>}
+					renderItem={({item}) => ( 
+						<TouchableOpacity onPress={() => Linking.openURL(item.url)}>
+							<Text style={{color: 'blue'}}>
+								{item.name} | {item.topic}
+								{"\n"}
+							</Text>
+						</TouchableOpacity>
+					)}
 				/>
 			</View>
 		);		

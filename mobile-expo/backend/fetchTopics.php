@@ -4,7 +4,7 @@ include('db.php');
 $userId	= $decodedData['UserID'];
 //$userId	= 18;
 
-$sqlSelect = 	"SELECT name, topic " . 
+$sqlSelect = 	"SELECT name, topic, url " . 
 		" FROM topics T, subscription_notifications SN, subscriptions S, events E " .
 		" WHERE T.id = SN.notification_id " . 
 		" AND SN.subscription_id = S.id " .
@@ -28,7 +28,9 @@ if(mysqli_stmt_execute($stmtSelect)){
 		exit();
 	} else {
 		while($row = mysqli_fetch_array($result)){
-			$topics[] = array('name' => $row['name'], 'topic' => $row['topic']);
+			$topics[] = array('name' => $row['name'],
+							 'topic' => $row['topic'],
+							 'url'   => $row['url']);
 		}
 //		$response[] = array("Message" => "Success");
 		$response = array("Topics" => $topics);
