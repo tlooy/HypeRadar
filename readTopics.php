@@ -7,11 +7,12 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     // Include config file
 
     // Prepare a select statements
-	$sql_topics = " SELECT T.topic, T.id " .
+	$sql_topics = " SELECT T.topic, T.id, S.name status" .
 			"  FROM topics T, topic_statuses S " .
 			" WHERE T.event_id = ? " .
 			"   AND T.status_id = S.id " .
-			"   AND S.name = 'Published' " .
+// TODO: should we only show published topics or all topics?
+//			"   AND S.name = 'Published' " .
 			" ORDER BY create_datetime desc";
     
     if($stmt_topics = mysqli_prepare($conn, $sql_topics)){
@@ -59,12 +60,14 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
 					if(mysqli_num_rows($result_topics) > 0) {
 						echo '<table class="table table-bordered table-striped">';
 						echo "<thead> <tr>"; 
-						echo "<th> Topic  </th>";
+						echo "<th> Topic   </th>";
+						echo "<th> Status  </th>";
 						echo "</tr> </thead>";
 						echo "<tbody>";
 						while($row = mysqli_fetch_array($result_topics)){
 							echo "<tr>";
-							echo "<td width=50%>" . $row['topic']  . "</td>";
+							echo "<td width=80%>" . $row['topic']  . "</td>";
+							echo "<td width=20%>" . $row['status']  . "</td>";
 							echo "</tr>";
 						}
 						echo "</tbody></table>";

@@ -4,12 +4,23 @@ include('db.php');
 $userId	= $decodedData['UserID'];
 //$userId	= 18;
 
+
+$sqlSelect = 	"SELECT name, topic, url " . 
+				"  FROM topics T, subscriptions S, events E " .
+				" WHERE S.user_id = ? " .
+				"   AND E.id = S.event_id " .
+				"   AND E.id = T.event_id " .
+				" ORDER BY T.create_datetime DESC";
+
+/*
 $sqlSelect = 	"SELECT name, topic, url " . 
 		" FROM topics T, subscription_notifications SN, subscriptions S, events E " .
 		" WHERE T.id = SN.notification_id " . 
 		" AND SN.subscription_id = S.id " .
 		" AND E.id = T.event_id" .
 		" AND S.user_id = ? ";
+*/
+
 // TODO: fix exception handling that was originally implemented using "Message" => "Success" (Note line 32 is commented out)
 $stmtSelect = mysqli_stmt_init($conn);
 if (!mysqli_stmt_prepare($stmtSelect, $sqlSelect)) {

@@ -70,7 +70,8 @@
 				<?php
 					if (isset($_SESSION["username"])) {
 						echo "<li class='nav-item'> <a class='nav-link active' href='eventCalendar.php'>Event Calendar</a> </li>";
-						echo "<li class='nav-item'> <a class='nav-link active' href='profile.php'>My Profile</a> </li>";
+						echo "<li class='nav-item'> <a class='nav-link active' href='mySubscriptions.php'>My Subscriptions</a> </li>";
+						echo "<li class='nav-item'> <a class='nav-link active' href='myTopics.php'>My Topics</a> </li>";
 						echo "<li class='nav-item'> <a class='nav-link active' href='logout.php'>Sign Out</a> </li>";
 						echo "Hello " . $_SESSION['username'];
 						echo ".  You are signed in with User ID " . $_SESSION['userid'];
