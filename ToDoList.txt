@@ -20,3 +20,6 @@ Create Top Subscribed Events, Top Notification Events, and Top Contributors to h
 Permissions for Contributors by Events: Admins can do all, Contributors for just specific Events
 Contributors that are being auditioned - don't have their notifications published
 Add top notification sources to metrics on index.php
+Error handling in publishing: if no subscriptions don't send a notification request to expo (in HypeRadar/expoPushNotifications.php)
+Decide if we want to use topic status values in any logic.  Currently we ignore the status and show all topics.
+Regex for valid URLs.

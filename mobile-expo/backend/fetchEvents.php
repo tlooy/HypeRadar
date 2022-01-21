@@ -1,8 +1,8 @@
 <?php
 include('db.php');
 
-//$userId	= $decodedData['UserID'];
-$userId	= 18;
+$userId	= $decodedData['UserID'];
+// $userId	= 18;
 
 $sqlSelect = 	"SELECT name" . 
 				" FROM events E, subscriptions S, users U " .

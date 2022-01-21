@@ -20,75 +20,68 @@ if(isset($_GET["topic_id"]) && !empty(trim($_GET["topic_id"]))){
         
 		if(mysqli_stmt_execute($stmt_pushTokens)){
 			$result_pushTokens = mysqli_stmt_get_result($stmt_pushTokens);
+
+			if(mysqli_num_rows($result_pushTokens) > 0){
+
+				while($row = mysqli_fetch_array($result_pushTokens)){
+					$payload_tokens[] = $row['notification_token'];
+					$payload_body = "You have a ping from Hype Radar!\n" . 
+													$row['name']  . ": \n" . 
+													$row['topic'] . ": \n" . 
+													$row['url'];
+				}
+				$payload = array(
+					'to' => $payload_tokens,
+					'sound' => 'default',
+					'body' => $payload_body,
+			    );
+print_r($payload);
+
+				$curl = curl_init();
+
+				curl_setopt_array($curl, array(
+				  CURLOPT_URL => "https://exp.host/--/api/v2/push/send",
+				  CURLOPT_RETURNTRANSFER => true,
+				  CURLOPT_ENCODING => "",
+				  CURLOPT_MAXREDIRS => 10,
+				  CURLOPT_TIMEOUT => 30,
+				  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				  CURLOPT_CUSTOMREQUEST => "POST",
+				  CURLOPT_POSTFIELDS => json_encode($payload),
+				  CURLOPT_HTTPHEADER => array(
+				    "Accept: application/json",
+				    "Accept-Encoding: gzip, deflate",
+				    "Content-Type: application/json",
+				    "cache-control: no-cache",
+				    "host: exp.host"
+				  ),
+				));
+
+				$response = curl_exec($curl);
+				$err = curl_error($curl);
+
+				curl_close($curl);
+
+				if ($err) {
+				  echo "cURL Error #:" . $err;
+				} else {
+				  echo $response;
+				}
+			} else {
+				echo "No subscriptions found for this event.";
+			}
 		} else {
 			header("location: ./error.php");
+			exit();
 		}
 	} else {
 		header("location: ./error.php");
+		exit();
 	}
-
-	while($row = mysqli_fetch_array($result_pushTokens)){
-		$payload_tokens[] = $row['notification_token'];
-		$payload_body = "You have a ping from Hype Radar!\n" . 
-										$row['name']  . ": \n" . 
-										$row['topic'] . ": \n" . 
-										$row['url'];
-	}
-	$payload = array(
-	'to' => $payload_tokens,
-	'sound' => 'default',
-	'body' => $payload_body,
-    );
-print_r($payload);
-
 } else {
 	header("location: ./error.php");
 	exit();
-
 }   
-
-/*
-    $payload = array(
-        'to' => 'ExponentPushToken[xRVMIeId6t0BQS_eY94El7]',
-        'sound' => 'default',
-        'body' => $payload_body,
-    );
-*/
-
-$curl = curl_init();
-
-curl_setopt_array($curl, array(
-  CURLOPT_URL => "https://exp.host/--/api/v2/push/send",
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => "",
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 30,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => json_encode($payload),
-  CURLOPT_HTTPHEADER => array(
-    "Accept: application/json",
-    "Accept-Encoding: gzip, deflate",
-    "Content-Type: application/json",
-    "cache-control: no-cache",
-    "host: exp.host"
-  ),
-));
-
-$response = curl_exec($curl);
-$err = curl_error($curl);
-
-curl_close($curl);
-
-if ($err) {
-  echo "cURL Error #:" . $err;
-} else {
-  echo $response;
-}
-
-
-
-
 ?>
 
 

@@ -99,7 +99,9 @@ AWS Lightsail Install
 			create user 'tlooy'@'localhost' identified by 'TLUbuntu24!';
 			grant all privileges on *.* to 'tlooy'@'%' with grant option;
 		
-
+		Install curl for php7.4
+			https://www.digitalocean.com/community/questions/curl-is-not-installed-on-this-server-after-updating-to-ubuntu-20-04
+			sudo apt-get install php7.4-curl
 
 *****************************************		
 Updating Anrew's Laptop for new git repo
