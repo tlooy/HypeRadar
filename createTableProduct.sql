@@ -186,4 +186,6 @@ ALTER TABLE topics ADD FOREIGN KEY (status_id)
       REFERENCES topic_statuses(id)
       ON DELETE RESTRICT;
 
-[Jan 13, 2022: Product Database up to date]
+[Jan 13, 2022: Production Database up to date]
+
+ALTER TABLE topics ADD COLUMN url VARCHAR(200);

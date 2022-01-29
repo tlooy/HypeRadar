@@ -84,7 +84,7 @@
 //					mysqli_close($conn);
 				?>
 				<input type="submit" value="Submit" class="btn btn-danger">
-				<a href="./profile.php" class="btn btn-secondary">Cancel</a>
+				<a href="./mySubscriptions.php" class="btn btn-secondary">Cancel</a>
 
 			</form>
 		</div>
