@@ -2,56 +2,77 @@
 
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
-import React, { useState, useEffect, useRef } from 'react';
-import { Component, Text, View, Button, Platform, FlatList } from 'react-native';
+import React, { Component, useState, useEffect } from 'react';
+import { Text, View, Button, Platform, FlatList } from 'react-native';
 import styles from './style';
 
-Notifications.setNotificationHandler({
-	handleNotification: async () => ({
-		shouldShowAlert: true,
-		shouldPlaySound: true,
-		shouldSetBadge: false,
-	}),
-});
+export default class Home extends Component {
+	constructor(props) {
+		super(props);
 
-// TODO: Get these two variables working with useState rather than global variables
-let userID;
-let eventArray = [];
+		this.state = {
+			userID: "",
+			expoPushToken: '',
+			notification: false,
+			registeredFlag: false,
+			events: [] 
+		}
 
-//let registeredFlag = false;
+		Notifications.setNotificationHandler({
+			handleNotification: async () => ({
+				shouldShowAlert: true,
+				shouldPlaySound: true,
+				shouldSetBadge: false,
+			}),
+		})
+	}
 
-export default function App({ navigation }) {
-	const [expoPushToken, setExpoPushToken] = useState('');
-	const [notification, setNotification] = useState(false);
-	const [registeredFlag, setRegisteredFlag] = useState(false);
+	componentDidMount() {
+		this.state.userID = this.props.navigation.getParam('UserID');
+ 		this.fetchEvents();
 
-	const [events, setEvents] = useState( { data : [] });
+		this.getPushTokenFromExpo()
+		.then(token => this.checkForExpoPushTokenInDatabase(token))
+		.catch((error)=> {
+			console.error("ERROR FOUND" + error);
+		})
+ 	}
+	
+	render() {
+		return (
+			<View
+				style={{
+					flex: 1,
+					alignText: 'left',
+					justifyContent: 'space-around',
+				}}>
+				<Text>UserID: { this.state.userID }{"\n"}
+					{ global.environment }{"\n"}
+					{ this.state.expoPushToken }{"\n"}</Text>
 
-	const notificationListener = useRef();
-	const responseListener = useRef();
+				<Text>Your Subscribed Events</Text>
 
-// TODO: why doesn't this work?  I get an occasional promise rejection saying "Can't find variable: userID 
-//	const [userID, setUserID] = useState(navigation.getParam('UserID'));
+				<Text>----------------------</Text>
+				<FlatList
+					data={ this.state.events.Events }
+					keyExtractor={(x, i) => i}
+					renderItem={({item}) =>
+						<Text>
+							{item.name}
+						</Text>}
+				/>
 
-	userID = navigation.getParam('UserID');
-	useEffect(() => {
-		getPushTokenFromExpo()
-		.then(token => checkForExpoPushTokenInDatabase(token))
-		.then(token => setExpoPushToken(token));
+				<Button
+					title="Go to your Topics"
+					onPress= {() =>  {
+						this.props.navigation.navigate("TopicsScreen", {UserID: this.state.userID });
+					}}
+		      		/>
+			</View>
+		);
+	}	
 
-/* 	This doesn't work and I don't know why.  I put the contents of the getuserSubscribedEvents
-	call inline below to get it to work
-		Response = getUserSubscribedEvents();
-		.then(Response => { 
-			console.log("2 - Response: ", Response);
-			setEvents( { data: Response } )
-			eventArray = Response;
-			console.log("3 - eventArray: ", eventArray);
-		} );
-*/
-
-
-// This section didn't work as a function so I put it inline here to get it to work.
+	fetchEvents = async() => {
 		var APIURL = global.environment + "fetchEvents.php";
 
 		var headers = {
@@ -60,7 +81,7 @@ export default function App({ navigation }) {
 		};
 
 		var Data = {
-			UserID: userID
+			UserID: this.state.userID
 		};
 
 		fetch(APIURL,{
@@ -70,101 +91,44 @@ export default function App({ navigation }) {
 		})
 		.then(Response => Response.json())
 		.then(Response => {
-			setEvents( { data: Response } ); 
+			this.setState({events: Response }); 
 		})
 		.catch((error)=>{
 			console.error("ERROR FOUND" + error);
 		})
+	};
 
-
-
-
-
-
-
-		// This listener is fired whenever a notification is received while the app is foregrounded
-		notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-			setNotification(notification);
-		});
-
-		// This listener is fired whenever a user taps on or interacts with a notification 
-		// (works when app is foregrounded, backgrounded, or killed)
-		responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-			console.log(response);
-		});
-
-		return () => {
-			Notifications.removeNotificationSubscription(notificationListener.current);
-			Notifications.removeNotificationSubscription(responseListener.current);
-		};
-	}, []);
-	
-	return (
-		<View
-			style={{
-				flex: 1,
-				alignText: 'left',
-				justifyContent: 'space-around',
-			}}>
-			<Text>User ID: { userID }{"\n"}</Text>
-
-			<Text>Environment: { global.environment }{"\n"}</Text>
-
-			<Text>{ expoPushToken }{"\n"}</Text>
-
-			<Text>Your Subscribed Events</Text>
-			<Text>----------------------</Text>
-			<FlatList 
-				data={ events.data.Events }
-				keyExtractor={(x, i) => i}
-				renderItem={({item}) => 
-					<Text>
-						{item.name} 
-					</Text>}
-			/>
-
-			<Button
-				title="Go to your Topics"
-				onPress= {() =>  {
-					navigation.navigate("TopicsScreen", {UserID: userID});
-				}}
-	      		/>
-		</View>
-	);
-}
-
-async function getPushTokenFromExpo() {
-	let token;
-	if (Constants.isDevice) {
-		const { status: existingStatus } = await Notifications.getPermissionsAsync();
-		let finalStatus = existingStatus;
-		if (existingStatus !== 'granted') {
-			const { status } = await Notifications.requestPermissionsAsync();
-			finalStatus = status;
+	getPushTokenFromExpo = async() => {
+		let token;
+		if (Constants.isDevice) {
+			const { status: existingStatus } = await Notifications.getPermissionsAsync();
+			let finalStatus = existingStatus;
+			if (existingStatus !== 'granted') {
+				const { status } = await Notifications.requestPermissionsAsync();
+				finalStatus = status;
+			}
+			if (finalStatus !== 'granted') {
+				alert('Failed to get push token for push notification!');
+				return;
+			}
+			token = (await Notifications.getExpoPushTokenAsync()).data;
+		} else {
+			alert('Must use physical device for Push Notifications');
 		}
-		if (finalStatus !== 'granted') {
-			alert('Failed to get push token for push notification!');
-			return;
+
+		if (Platform.OS === 'android') {
+			Notifications.setNotificationChannelAsync('default', {
+				name: 'default',
+				importance: Notifications.AndroidImportance.MAX,
+				vibrationPattern: [0, 250, 250, 250],
+				lightColor: '#FF231F7C',
+			});
 		}
-		token = (await Notifications.getExpoPushTokenAsync()).data;
-	} else {
-		alert('Must use physical device for Push Notifications');
+		this.state.expoPushToken = token;
+	  	return token;
 	}
 
-	if (Platform.OS === 'android') {
-		Notifications.setNotificationChannelAsync('default', {
-			name: 'default',
-			importance: Notifications.AndroidImportance.MAX,
-			vibrationPattern: [0, 250, 250, 250],
-			lightColor: '#FF231F7C',
-		});
-	}
-
-  return token;
-}
-
-async function checkForExpoPushTokenInDatabase(expoPushToken) {
-		// TODO change this to localhost or something else from config...
+	checkForExpoPushTokenInDatabase = async() => {
 		var APIURL = global.environment + "fetchDID.php";
 
 		var headers = {
@@ -173,8 +137,8 @@ async function checkForExpoPushTokenInDatabase(expoPushToken) {
 		};
 
 		var Data = {
-			Token: expoPushToken,
-			UserID: userID
+			Token: this.state.expoPushToken,
+			UserID: this.state.userID
 		};
 
 		fetch(APIURL,{
@@ -185,17 +149,17 @@ async function checkForExpoPushTokenInDatabase(expoPushToken) {
 		.then((Response)=>Response.json())
 		.then((Response)=>{
 			if (Response[0].Message == "Not Registered") {
-				saveExpoPushToken(expoPushToken, userID);
+				this.saveExpoPushToken();
 			}
 		})
 		.catch((error)=>{
 			console.error("ERROR FOUND" + error);
 		})
 
-	return expoPushToken;
-}
+		return this.state.expoPushToken;
+	}
 
-async function saveExpoPushToken(expoPushToken, userID) {
+	saveExpoPushToken = async() => {
 		// TODO change this to localhost or something else from config...
 		var APIURL = global.environment + "saveDID.php";
 
@@ -205,8 +169,8 @@ async function saveExpoPushToken(expoPushToken, userID) {
 		};
 
 		var Data = {
-			Token: expoPushToken,
-			UserID: userID
+			Token: this.state.expoPushToken,
+			UserID: this.state.userID
 		};
 
 		fetch(APIURL,{
@@ -225,38 +189,6 @@ async function saveExpoPushToken(expoPushToken, userID) {
 		.catch((error)=>{
 			console.error("ERROR FOUND" + error);
 		})
-	return expoPushToken;
-}  
-
-// I couldn't get this function to play nicely with the .then calls earlier in the code
-function getUserSubscribedEvents() {
-//async function getUserSubscribedEvents() {
-	// TODO change this to localhost or something else from config...
-	var APIURL = global.environment + "fetchEvents.php";
-
-	var headers = {
-		'Accept' : 'application/json',
-		'Content-Type' : 'application/json'
-	};
-
-	var Data = {
-		UserID: userID
-	};
-
-	fetch(APIURL,{
-		method: 'POST',
-		headers: headers,
-		body: JSON.stringify(Data)
-	})
-	.then(Response => Response.json())
-	.then(Response => {
-
-		console.log("1 - Response: ", Response);
-		return Response;	
-	})
-	.catch((error)=>{
-		console.error("ERROR FOUND" + error);
-	})
-
-//	return Response;
-}  
+		return this.state.expoPushToken;
+	}
+}

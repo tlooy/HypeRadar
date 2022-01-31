@@ -30,7 +30,7 @@ const homeStack = createStackNavigator(
             },
         },
     },
-    {initialRouteName: 'HomeScreen'}
+    {initialRouteName: 'SignInScreen'}
     );
 
 export default createAppContainer(homeStack);

@@ -66,9 +66,7 @@ export default class Topics extends Component {
 					)}
 				/>
 			</View>
-		);		
-	
+		);			
 	}
-
 }
 
